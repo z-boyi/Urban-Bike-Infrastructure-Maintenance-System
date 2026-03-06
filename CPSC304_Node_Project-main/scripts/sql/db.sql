@@ -1,3 +1,24 @@
+drop table Component;
+drop table ConsistOf;
+drop table Need;
+drop table BikeStation;
+drop table Bike;
+drop table RegularBike;
+drop table EBike;
+drop table StationInfo;
+drop table StationAddress;
+drop table CustomerContact;
+drop table CustomerAccount;
+drop table Report;
+drop table IssueRule;
+drop table IssueRecord;
+drop table MaintenanceTask;
+drop table Maintenance;
+drop table Staff;
+drop table Technician;
+drop table Inspector;
+drop table Manager;
+
 CREATE TABLE Component (
 ComponentID CHAR(4),
 StockQuantity INTEGER CHECK (StockQuantity >= 0),
