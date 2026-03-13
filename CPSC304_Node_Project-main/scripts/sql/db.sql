@@ -79,7 +79,7 @@ CREATE TABLE Maintenance (
 	Contact VARCHAR(20),
 	AssignedArea CLOB,
 	RoleID CHAR(4),
-	ManagerID CHAR(4) NOT NULL,
+	ManagerID CHAR(4),
 	PRIMARY KEY (StaffID),
 	FOREIGN KEY (ManagerID) REFERENCES Staff(StaffID) 
 );
