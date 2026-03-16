@@ -81,7 +81,8 @@ CREATE TABLE Maintenance (
 	RoleID CHAR(4),
 	ManagerID CHAR(4),
 	PRIMARY KEY (StaffID),
-	FOREIGN KEY (ManagerID) REFERENCES Staff(StaffID) 
+	FOREIGN KEY (ManagerID) REFERENCES Staff(StaffID),
+    CHECK (ManagerID IS NULL OR ManagerID <> StaffID) 
 );
 
 CREATE TABLE Technician (
@@ -267,11 +268,11 @@ INSERT INTO Maintenance VALUES ('M005',2,'Complete','General inspection');
 
 
 -- Staff (Manager)
-INSERT INTO Staff VALUES ('S011','Alice','111','UBC','R1','S011');
-INSERT INTO Staff VALUES ('S012','Bob','222','Downtown','R1','S012');
-INSERT INTO Staff VALUES ('S013','Carol','333','CityHall','R1','S013');
-INSERT INTO Staff VALUES ('S014','David','444','Kits','R1','S014');
-INSERT INTO Staff VALUES ('S015','Emma','555','Granville','R1','S015');
+INSERT INTO Staff VALUES ('S011','Alice','111','UBC','R1',NULL);
+INSERT INTO Staff VALUES ('S012','Bob','222','Downtown','R1',NULL);
+INSERT INTO Staff VALUES ('S013','Carol','333','CityHall','R1',NULL);
+INSERT INTO Staff VALUES ('S014','David','444','Kits','R1',NULL);
+INSERT INTO Staff VALUES ('S015','Emma','555','Granville','R1',NULL);
 
 
 -- Staff (Technician)
