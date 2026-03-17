@@ -104,7 +104,7 @@ CREATE TABLE MaintenanceTask (
 	TaskID CHAR(4),
 	MaintenanceID CHAR(4) NOT NULL,
 	Duration INTERVAL DAY TO SECOND,
-	StartTime TIMESTAMP,
+	StartTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	EndTime TIMESTAMP,
 	TechnicianID CHAR(4),
 	PRIMARY KEY (TaskID, MaintenanceID),
