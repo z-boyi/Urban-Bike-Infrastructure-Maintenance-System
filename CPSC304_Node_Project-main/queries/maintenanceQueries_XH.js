@@ -11,7 +11,7 @@ async function insertMaintenanceTask(TaskID, MaintenanceID, TechnicianID) {
         );
 
         return {success: result.rowsAffected && result.rowsAffected > 0};
-        
+
     }).catch((error) => {
         if (error.errorNum === 2291) {
             return { success: false, message: "MaintenanceID or TechnicianID does not exist." };
@@ -81,6 +81,32 @@ async function getTechnicianAboveAverageWorkload() {
                 FROM MaintenanceTask
                 GROUP BY TechnicianID
                 )
+            );
+        `
+    )
+    
+    return { success: true, data: result.rows, columns: result.metaData.map(col => col.name)};
+
+    }).catch(() => {
+        return { success: false, message: "Query failed." };
+    });
+}
+
+// Division Query (Hardcoded Query)
+async function getTechnicianWorkOnAllTasks() {
+    return await withOracleDB(async (connection) => {
+    const result = await connection.execute(
+        `
+        SELECT S.StaffID, S.name
+        FROM Staff S, Technician T
+        WHERE S.StaffID = T.StaffID 
+            AND NOT EXISTS (
+                (SELECT MT.TaskID
+                FROM MaintenanceTask MT)
+                MINUS
+                (SELECT MT2.TaskID
+                FROM MaintenanceTask MT2
+                WHERE MT2.TechnicianID = T.StaffID)
             );
         `
     )
