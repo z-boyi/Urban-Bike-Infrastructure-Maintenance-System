@@ -39,13 +39,15 @@ async function getTasksByTechnicianID(TechnicianID) {
         // Find tasks with information associate with this technician
         const result = await connection.execute(
             `
-            SELECT T.StaffID, MT.TaskID, M.MaintenanceID, M.PriorityLevel, M.CompletionStatus, M.RepairQuotation
+            SELECT T.StaffID, S.Name, MT.TaskID, M.MaintenanceID, M.PriorityLevel, M.CompletionStatus, M.RepairQuotation
             FROM Technician T
+            JOIN Staff S
+                ON T.StaffID = S.StaffID
             JOIN MaintenanceTask MT 
                 ON T.StaffID = MT.TechnicianID
             JOIN Maintenance M 
-                ON MT.TaskID = M.TaskID
-            WHERE StaffID = :TechnicianID
+                ON MT.MaintenanceID = M.MaintenanceID
+            WHERE T.StaffID = :TechnicianID
             `,
             { TechnicianID },
         );
