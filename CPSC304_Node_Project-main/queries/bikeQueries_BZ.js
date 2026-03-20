@@ -8,14 +8,21 @@ async function updateBikeStatus(bikeID, newStatus) {
             SET Status = :newStatus 
             WHERE BikeID = :bikeID
             `,
-            [newStatus, bikeID],
+            { newStatus, bikeID },
             { autoCommit: true }
         );
 
-        return result.rowsAffected;
+        return {success: true, rowsAffected: result.rowsAffected};
     }).catch((err) => {
-        console.error("Error in updateBikeStatus:", err);
-        return -1;
+        console.error("UPDATE ERROR (Bike Status)");
+        console.error("BikeID:", bikeID, "| NewStatus:", newStatus);
+        console.error("Message:", err.message);
+
+        return {
+            success: false,
+            error: "Failed to update bike status",
+            details: err.message
+        };
     });
 }
 
@@ -51,8 +58,15 @@ async function searchBikes(status, brand, postalCode) {
         const result = await connection.execute(query, binds);
         return result.rows;
     }).catch((err) => {
-        console.error("Error in searchBikes:", err);
-        return [];
+        console.error("SELECTION ERROR (Search Bikes)");
+        console.error("Filters:", { status, brand, postalCode });
+        console.error("Message:", err.message);
+
+        return {
+            success: false,
+            error: "Failed to search bikes",
+            details: err.message
+        };
     });
 }
 
@@ -71,7 +85,20 @@ async function countBikesPerStation() {
 
         return result.rows;
     }).catch((err) => {
-        console.error("Error in countBikesPerStation:", err);
-        return [];
+        console.error("GROUP BY ERROR (Bikes Per Station)");
+        console.error("Query: COUNT bikes grouped by station");
+        console.error("Message:", err.message);
+
+        return {
+            success: false,
+            error: "Failed to count bikes per station",
+            details: err.message
+        };
     });
 }
+
+module.exports = {
+    updateBikeStatus,
+    searchBikes,
+    countBikesPerStation
+};
