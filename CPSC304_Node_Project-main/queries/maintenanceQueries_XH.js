@@ -11,6 +11,7 @@ async function insertMaintenanceTask(TaskID, MaintenanceID, TechnicianID) {
         );
 
         return {success: result.rowsAffected && result.rowsAffected > 0};
+        
     }).catch((error) => {
         if (error.errorNum === 2291) {
             return { success: false, message: "MaintenanceID or TechnicianID does not exist." };
@@ -54,10 +55,39 @@ async function getTasksByTechnicianID(TechnicianID) {
         if (result.rows.length === 0) {
             return { success: true, message: "Technician exists but has no tasks."}
         }
+        
         return {success: true, data: result.rows};
+
     }).catch(() => {
         if (error.errorNum === 2291) {
             return { success: false, message: "Query failed" };
         }
+    });
+}
+
+// Nested Aggregation Query (Hardcoded Query)
+async function getTechnicianAboveAverageWorkload() {
+    return await withOracleDB(async (connection) => {
+    const result = await connection.execute(
+        `
+        SELECT S.StaffID, S.Name, COUNT(*) AS NumberOfTask
+        FROM Staff S, Technician T, MaintenanceTask MT
+        WHERE S.StaffID = T.StaffID AND MT.TechnicianID = T.StaffID
+        GROUP BY S.StaffID, S.Name
+        HAVING COUNT(MT.TaskID) > 
+            (SELECT AVG(NumberOfTask)
+            FROM 
+                (SELECT COUNT(*) As NumberOfTask
+                FROM MaintenanceTask
+                GROUP BY TechnicianID
+                )
+            );
+        `
+    )
+    
+    return { success: true, data: result.rows, columns: result.metaData.map(col => col.name)};
+
+    }).catch(() => {
+        return { success: false, message: "Query failed." };
     });
 }
