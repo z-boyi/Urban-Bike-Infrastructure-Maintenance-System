@@ -1,4 +1,4 @@
-//Delete selected issue
+//Delete selected Issue
 async function deleteIssueRecord(issueId) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
