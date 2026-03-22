@@ -51,4 +51,21 @@ router.get('/get-technician-above-average-workload', async(req, res) => {
     }
 })
 
+// endpoint for division query
+router.get('/get-technician-working-on-all-tasks', async(req, res) => {
+    const queryResult = await appService.getTechnicianWorkOnAllTasks();
+    if (queryResult.success) {
+        res.json({
+            success: true,
+            data: queryResult.data,
+            columns: queryResult.columns
+        })
+    } else {
+        res.json({
+            success: false,
+            message: queryResult.message
+        })
+    }
+})
+
 module.exports = router;
