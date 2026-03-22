@@ -34,4 +34,21 @@ router.get('/get-tasks-by-technician', async(req, res) => {
     }
 })
 
+// endpoint for nested aggregation query
+router.get('/get-technician-above-average-workload', async(req, res) => {
+    const queryResult = await appService.getTechnicianAboveAverageWorkload();
+    if (queryResult.success) {
+        res.json({
+            success: true,
+            data: queryResult.data,
+            columns: queryResult.columns
+        });
+    } else {
+        res.json({
+            success: false,
+            message: queryResult.message
+        })
+    }
+})
+
 module.exports = router;

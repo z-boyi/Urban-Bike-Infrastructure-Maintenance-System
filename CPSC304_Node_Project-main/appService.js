@@ -357,7 +357,7 @@ async function getTechnicianAboveAverageWorkload() {
                 FROM MaintenanceTask
                 GROUP BY TechnicianID
                 )
-            );
+            )
         `
     )
     
@@ -383,7 +383,7 @@ async function getTechnicianWorkOnAllTasks() {
                 (SELECT MT2.TaskID
                 FROM MaintenanceTask MT2
                 WHERE MT2.TechnicianID = T.StaffID)
-            );
+            )
         `
     )
     

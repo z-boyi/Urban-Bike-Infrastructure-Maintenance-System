@@ -282,6 +282,10 @@ INSERT INTO Staff VALUES ('S003','Mark','333','Downtown','R2','S012');
 INSERT INTO Staff VALUES ('S004','Luke','444','CityHall','R2','S013');
 INSERT INTO Staff VALUES ('S005','John','555','Kits','R2','S014');
 
+INSERT INTO Staff VALUES ('S016','Mike','333','Downtown','R2','S012');
+INSERT INTO Staff VALUES ('S017','James','444','CityHall','R2','S013');
+INSERT INTO Staff VALUES ('S018','Jim','555','Kits','R2','S014');
+
 
 -- Staff (Inspector)
 INSERT INTO Staff VALUES ('S006','Anna','666','UBC','R3','S011');
@@ -298,6 +302,9 @@ INSERT INTO Technician VALUES ('S003');
 INSERT INTO Technician VALUES ('S004');
 INSERT INTO Technician VALUES ('S005');
 
+INSERT INTO Technician VALUES ('S016');
+INSERT INTO Technician VALUES ('S017');
+INSERT INTO Technician VALUES ('S018');
 
 -- Inspector
 INSERT INTO Inspector VALUES ('S006');
@@ -313,6 +320,9 @@ INSERT INTO MaintenanceTask VALUES ('T002','M002',INTERVAL '2' HOUR,TIMESTAMP '2
 INSERT INTO MaintenanceTask VALUES ('T003','M003',INTERVAL '1' HOUR,TIMESTAMP '2026-01-03 09:00:00',TIMESTAMP '2026-01-03 10:00:00','S003');
 INSERT INTO MaintenanceTask VALUES ('T004','M004',INTERVAL '3' HOUR,TIMESTAMP '2026-01-04 08:00:00',TIMESTAMP '2026-01-04 11:00:00','S004');
 INSERT INTO MaintenanceTask VALUES ('T005','M005',INTERVAL '1' HOUR,TIMESTAMP '2026-01-05 13:00:00',TIMESTAMP '2026-01-05 14:00:00','S005');
+INSERT INTO MaintenanceTask VALUES ('T006','M004',INTERVAL '1' HOUR,TIMESTAMP '2026-01-07 09:00:00',TIMESTAMP '2026-01-03 10:00:00','S003');
+INSERT INTO MaintenanceTask VALUES ('T007','M005',INTERVAL '3' HOUR,TIMESTAMP '2026-01-08 08:00:00',TIMESTAMP '2026-01-04 11:00:00','S003');
+INSERT INTO MaintenanceTask VALUES ('T008','M005',INTERVAL '1' HOUR,TIMESTAMP '2026-01-09 13:00:00',TIMESTAMP '2026-01-05 14:00:00','S018');
 
 
 -- IssueRule
@@ -394,3 +404,16 @@ INSERT INTO Manager VALUES ('S014');
 INSERT INTO Manager VALUES ('S015');
 
 commit;
+
+ SELECT S.StaffID, S.Name, COUNT(*) AS NumberOfTask
+        FROM Staff S, Technician T, MaintenanceTask MT
+        WHERE S.StaffID = T.StaffID AND MT.TechnicianID = T.StaffID
+        GROUP BY S.StaffID, S.Name
+        HAVING COUNT(MT.TaskID) > 
+            (SELECT AVG(NumberOfTask)
+            FROM 
+                (SELECT COUNT(*) As NumberOfTask
+                FROM MaintenanceTask
+                GROUP BY TechnicianID
+                )
+            );
