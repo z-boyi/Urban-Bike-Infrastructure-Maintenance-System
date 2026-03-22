@@ -22,3 +22,23 @@ router.post("/update-bike-status", async (req, res) => {
         });
     }
 });
+
+// SELECTION ENDPOINT
+router.get("/search-bikes", async (req, res) => {
+    const { status, brand, postalCode } = req.query;
+
+    const result = await searchBikes(status, brand, postalCode);
+
+    if (result.success) {
+        res.json({
+            success: true,
+            data: result.data
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: result.error,
+            details: result.details
+        });
+    }
+});
