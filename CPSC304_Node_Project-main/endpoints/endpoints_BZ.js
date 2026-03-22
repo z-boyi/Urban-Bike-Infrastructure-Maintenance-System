@@ -42,3 +42,24 @@ router.get("/search-bikes", async (req, res) => {
         });
     }
 });
+
+// GROUP BY ENDPOINT
+router.get("/count-bikes-per-station", async (req, res) => {
+    const result = await countBikesPerStation();
+
+    if (result.success) {
+        res.json({
+            success: true,
+            data: result.data
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: result.error,
+            details: result.details
+        });
+    }
+});
+
+
+module.exports = router;
