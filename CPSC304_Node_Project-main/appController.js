@@ -15,54 +15,155 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
-router.get('/demotable', async (req, res) => {
-    const tableContent = await appService.fetchDemotableFromDb();
-    res.json({data: tableContent});
+router.post("/bike/update-status", async (req, res) => {
+    const { bikeID, newStatus } = req.body;
+    const result = await appService.updateBikeStatus(bikeID, newStatus);
+    if (result.success && result.rowsAffected > 0) {
+        res.json({
+            success: true,
+            message: "Bike status updated successfully."
+        });
+    } else if (result.success && result.rowsAffected === 0) {
+        res.json({
+            success: false,
+            message: "No bike found with that BikeID."
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: result.error,
+            details: result.details
+        });
+    }
 });
 
-router.post("/initiate-demotable", async (req, res) => {
-    const initiateResult = await appService.initiateDemotable();
-    if (initiateResult) {
+router.get("/bike/search", async (req, res) => {
+    const { status, brand, postalCode } = req.query;
+    const result = await appService.searchBikes(status, brand, postalCode);
+    if (result.success) {
+        res.json({
+            success: true,
+            data: result.data
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: result.error,
+            details: result.details
+        });
+    }
+});
+
+router.get("/bike/count-per-station", async (req, res) => {
+    const result = await appService.countBikesPerStation();
+    if (result.success) {
+        res.json({
+            success: true,
+            data: result.data
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: result.error,
+            details: result.details
+        });
+    }
+});
+
+router.post("/issue/delete", async (req, res) => {
+    const { issueId } = req.body;
+    const deleteResult = await appService.deleteIssueRecord(issueId);
+    if (deleteResult) {
         res.json({ success: true });
     } else {
         res.status(500).json({ success: false });
     }
 });
 
-router.post("/insert-demotable", async (req, res) => {
-    const { id, name } = req.body;
-    const insertResult = await appService.insertDemotable(id, name);
+router.post("/issue/projection", async (req, res) => {
+    const { attributes } = req.body;
+    const tableContent = await appService.getSelectedIssueAttributes(attributes);
+    res.json({ 
+        data: tableContent 
+    });
+});
+
+router.get("/issue/bike-many-issues", async (req, res) => {
+    const tableContent = await appService.getBikesWithManyIssues();
+    if (tableContent) {
+        res.json({
+            success: true,
+            data: tableContent
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            data: []
+        });
+    }
+});
+
+router.post('/maintenance-task/insert', async (req, res) => {
+    const { TaskID, MaintenanceID, TechnicianID } = req.body;
+    const insertResult = await appService.insertMaintenanceTask(TaskID, MaintenanceID, TechnicianID);
     if (insertResult) {
-        res.json({ success: true });
-    } else {
-        res.status(500).json({ success: false });
-    }
-});
-
-router.post("/update-name-demotable", async (req, res) => {
-    const { oldName, newName } = req.body;
-    const updateResult = await appService.updateNameDemotable(oldName, newName);
-    if (updateResult) {
-        res.json({ success: true });
-    } else {
-        res.status(500).json({ success: false });
-    }
-});
-
-router.get('/count-demotable', async (req, res) => {
-    const tableCount = await appService.countDemotable();
-    if (tableCount >= 0) {
         res.json({ 
-            success: true,  
-            count: tableCount
+            success: true
         });
     } else {
         res.status(500).json({ 
-            success: false, 
-            count: tableCount
+            success: false
         });
     }
 });
 
+router.get('/technician/tasks', async(req, res) => {
+    const { TechnicianID } = req.query;
+    const queryResult = await appService.getTasksByTechnicianID( TechnicianID);
+    if (queryResult.success) {
+        res.json({ 
+            success: true,
+            data: queryResult.data,
+            message: queryResult.message
+        });
+    } else {
+        res.status(400).json({
+            success: false,
+            message: queryResult.message
+        });
+    }
+});
+
+router.get('/technician/above-average-workload', async(req, res) => {
+    const queryResult = await appService.getTechnicianAboveAverageWorkload();
+    if (queryResult.success) {
+        res.json({
+            success: true,
+            data: queryResult.data,
+            columns: queryResult.columns
+        });
+    } else {
+        res.json({
+            success: false,
+            message: queryResult.message
+        });
+    }
+});
+
+router.get('/technician/working-on-all-tasks', async(req, res) => {
+    const queryResult = await appService.getTechnicianWorkOnAllTasks();
+    if (queryResult.success) {
+        res.json({
+            success: true,
+            data: queryResult.data,
+            columns: queryResult.columns
+        });
+    } else {
+        res.json({
+            success: false,
+            message: queryResult.message
+        });
+    }
+});
 
 module.exports = router;
