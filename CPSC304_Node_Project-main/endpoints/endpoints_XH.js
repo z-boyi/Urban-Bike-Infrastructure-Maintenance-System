@@ -16,4 +16,22 @@ router.post('/insert-maintenance-task', async (req, res) => {
     }
 });
 
+// endpoint for Join Query
+router.get('/get-tasks-by-technician', async(req, res) => {
+    const { TechnicianID } = req.query;
+    const queryResult = await appService.getTasksByTechnicianID( TechnicianID);
+    if (queryResult.success) {
+        res.json({ 
+            success: true,
+            data: queryResult.data,
+            message: queryResult.message
+        });
+    } else {
+        res.status(400).json({
+            success: false,
+            message: queryResult.message
+        });
+    }
+})
+
 module.exports = router;
