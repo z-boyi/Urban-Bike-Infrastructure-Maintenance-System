@@ -29,7 +29,7 @@ async function getTasksByTechnicianID(TechnicianID) {
             `
             SELECT *
             FROM Technician T
-            WHERE T.StaffID = TechnicianID
+            WHERE T.StaffID = :TechnicianID
             `,
             { TechnicianID } 
         );
