@@ -45,7 +45,7 @@ async function insertMaintenanceTask(event) {
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('insertResultMsg');
+    const messageElement = document.getElementById('queryResultMsg');
 
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
@@ -64,10 +64,42 @@ async function getTasksByTechnicianID() {
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('insertResultMsg');
+    const messageElement = document.getElementById('queryResultMsg');
 
     if (responseData.success) {
         messageElement.textContent = "Here are the tasks assigned to this technician";
+    } else {
+        messageElement.textContent = "Error querying data!";
+    }
+}
+
+// Get technicians above average workload
+async function getTechnicianAboveAverageWorkload() {
+    const response = await fetch('/technician/above-average-workload', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('queryResultMsg');
+
+    const tableElement = document.getElementById('maintenanceTask');
+    const tableBody = tableElement.querySelector('tbody');
+
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    if (responseData.success) {
+        messageElement.textContent = "Technicians with above-average workload";
+
+        responseData.data.forEach(rowData => {
+            const row = tableBody.insertRow();
+            rowData.forEach((field, index) => {
+                const cell = row.insertCell();
+                cell.textContent = field;
+            });
+        });
+
     } else {
         messageElement.textContent = "Error querying data!";
     }
