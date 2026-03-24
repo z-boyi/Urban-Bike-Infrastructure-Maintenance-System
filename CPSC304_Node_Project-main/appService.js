@@ -394,6 +394,21 @@ async function getTechnicianWorkOnAllTasks() {
     });
 }
 
+// fetch the maintence task table
+async function fetchMaintenanceTask() {
+    return await withOracleDB(async (connection) => {
+    const result = await connection.execute(
+            `
+            SELECT * FROM MaintenanceTask
+            `
+    )
+
+    return {success: true, data: result.rows, columns: result.metaData.map(col => col.name)};
+
+    }).catch(() => {
+        return { success: false, message: "Query failed." };
+    })
+}
 
 module.exports = {
     fetchBikes,
@@ -407,5 +422,6 @@ module.exports = {
     insertMaintenanceTask,
     getTasksByTechnicianID,
     getTechnicianAboveAverageWorkload,
-    getTechnicianWorkOnAllTasks
+    getTechnicianWorkOnAllTasks,
+    fetchMaintenanceTask
 };
