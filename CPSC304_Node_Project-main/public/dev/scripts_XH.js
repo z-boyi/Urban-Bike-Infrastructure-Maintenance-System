@@ -1,3 +1,29 @@
+// Fetches data from the demotable and displays it.
+async function fetchMaintenanceTask() {
+    const tableElement = document.getElementById('maintenanceTask');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/maintenance-task/fetch', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const demotableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    demotableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 // Insert a given maintenance task
 async function insertMaintenanceTask(event) {
     event.preventDefault();
@@ -23,25 +49,8 @@ async function insertMaintenanceTask(event) {
 
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
+        fetchMaintenanceTask();
     } else {
         messageElement.textContent = "Error inserting data!";
     }
-}
-
-// ---------------------------------------------------------------
-// Initializes the webpage functionalities.
-// Add or remove event listeners based on the desired functionalities.
-window.onload = function() {
-    checkDbConnection();
-    fetchTableData();
-    document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
-    document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
-    document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
-    document.getElementById("countDemotable").addEventListener("click", countDemotable);
-};
-
-// General function to refresh the displayed table data. 
-// You can invoke this after any table-modifying operation to keep consistency.
-function fetchTableData() {
-    fetchAndDisplayUsers();
 }
