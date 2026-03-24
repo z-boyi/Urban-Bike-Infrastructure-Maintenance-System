@@ -54,3 +54,21 @@ async function insertMaintenanceTask(event) {
         messageElement.textContent = "Error inserting data!";
     }
 }
+
+// Get tasks by technician id
+async function getTasksByTechnicianID() {
+    const TechnicianID = document.getElementById('TechnicianID').value;
+
+    const response = await fetch(`/technician/tasks?TechnicianID=${TechnicianID}`, {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('insertResultMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "Here are the tasks assigned to this technician";
+    } else {
+        messageElement.textContent = "Error querying data!";
+    }
+}

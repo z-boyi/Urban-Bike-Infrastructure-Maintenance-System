@@ -331,7 +331,7 @@ async function getTasksByTechnicianID(TechnicianID) {
             { TechnicianID },
         );
         if (result.rows.length === 0) {
-            return { success: true, message: "Technician exists but has no tasks."}
+            return { success: true, data: [], message: "Technician exists but has no tasks."}
         }
         
         return {success: true, data: result.rows};
