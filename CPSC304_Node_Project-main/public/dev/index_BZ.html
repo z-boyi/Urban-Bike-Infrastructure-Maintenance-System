@@ -1,0 +1,48 @@
+<h2>Update Bike Status</h2>
+<form id="updateBikeForm">
+    Bike ID: <input type="text" id="updateBikeID" required> <br><br>
+    New Status: <input type="text" id="updateStatus" required> <br><br>
+    <button type="submit">Update</button>
+</form>
+<div id="updateBikeMsg"></div>
+
+<br><hr><br>
+
+<h2>Search Bikes</h2>
+<form id="searchBikeForm">
+    Status: <input type="text" id="searchStatus"> <br><br>
+    Brand: <input type="text" id="searchBrand"> <br><br>
+    Postal Code: <input type="text" id="searchPostalCode"> <br><br>
+    <button type="submit">Search</button>
+</form>
+
+<table id="searchBikeTable" border="1">
+    <thead>
+        <tr>
+            <th>BikeID</th>
+            <th>Brand</th>
+            <th>LastServiceDate</th>
+            <th>DeploymentDate</th>
+            <th>Status</th>
+            <th>StreetAddress</th>
+            <th>PostalCode</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<br><hr><br>
+
+<h2>Count Bikes Per Station</h2>
+<button id="countBikesBtn">Count Bikes Per Station</button>
+
+<table id="groupByBikeTable" border="1">
+    <thead>
+        <tr>
+            <th>StreetAddress</th>
+            <th>PostalCode</th>
+            <th>BikeCount</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
