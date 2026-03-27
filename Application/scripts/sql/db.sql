@@ -404,16 +404,3 @@ INSERT INTO Manager VALUES ('S014');
 INSERT INTO Manager VALUES ('S015');
 
 commit;
-
- SELECT S.StaffID, S.Name, COUNT(*) AS NumberOfTask
-        FROM Staff S, Technician T, MaintenanceTask MT
-        WHERE S.StaffID = T.StaffID AND MT.TechnicianID = T.StaffID
-        GROUP BY S.StaffID, S.Name
-        HAVING COUNT(MT.TaskID) > 
-            (SELECT AVG(NumberOfTask)
-            FROM 
-                (SELECT COUNT(*) As NumberOfTask
-                FROM MaintenanceTask
-                GROUP BY TechnicianID
-                )
-            );
