@@ -86,6 +86,39 @@ async function fetchBikes() {
 }
 
 // ==================== Bike Queries ====================
+// INSERT Query: Insert Bike Station
+async function insertStation(StreetAddress, PostalCode, StationName) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `
+            INSERT INTO BikeStation (StreetAddress, PostalCode, StationName)
+            VALUES (:StreetAddress, :PostalCode, :StationName)
+            `,
+            { StreetAddress, PostalCode, StationName },
+            { autoCommit: true }
+        );
+
+        return { success: result.rowsAffected && result.rowsAffected > 0 };
+
+    }).catch((error) => {
+        console.error("INSERT STATION ERROR:", error);
+
+        if (error.errorNum === 1) {
+            return { success: false, message: "Station already exists." };
+        }
+
+        if (error.errorNum === 1400) {
+            return { success: false, message: "Missing required field." };
+        }
+
+        if (error.errorNum === 12899) {
+            return { success: false, message: "Input value too long." };
+        }
+
+        return { success: false, message: "Insert station failed." };
+    });
+}
+
 
 // UPDATE QUERY: Update a bike's status by BikeID 
 async function updateBikeStatus(bikeID, newStatus) {
@@ -420,6 +453,7 @@ async function fetchMaintenanceTask() {
 module.exports = {
     fetchBikes,
     testOracleConnection,
+    insertStation,
     updateBikeStatus,
     searchBikes,
     countBikesPerStation,

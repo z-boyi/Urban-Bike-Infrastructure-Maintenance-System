@@ -37,6 +37,45 @@ async function checkDbConnection() {
 }
 
 // ==================== Bike-Related Frontend Functions ====================
+// Insert a new station
+async function insertStation(event) {
+    event.preventDefault();
+
+    const StreetAddress = document.getElementById('stationStreet').value;
+    const PostalCode = document.getElementById('stationPostal').value;
+    const StationName = document.getElementById('stationName').value;
+
+    const response = await fetch('/station/insert', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            StreetAddress,
+            PostalCode,
+            StationName
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('insertStationMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "✅ Station inserted successfully!";
+    } else {
+        let msg = "❌ " + (responseData.message || "Insert failed.");
+    
+        if (responseData.errorCode === 1) {
+            msg += " This station already exists.";
+        } else if (responseData.errorCode === 1400) {
+            msg += " Some required fields are missing.";
+        } else if (responseData.errorCode === 12899) {
+            msg += " One of the inputs is too long.";
+        }
+    
+        messageElement.textContent = msg;
+    }
+}
+
+
 // Update bike status by BikeID
 async function updateBikeStatus(event) {
     event.preventDefault();
@@ -451,6 +490,7 @@ async function getTechnicianWorkOnAllTasks() {
 window.onload = function() {
     checkDbConnection();
 
+    document.getElementById("insertStationForm").addEventListener("submit", insertStation);
     document.getElementById("updateBikeForm").addEventListener("submit", updateBikeStatus);
     document.getElementById("searchBikeForm").addEventListener("submit", searchBikes);
     document.getElementById("countBikesBtn").addEventListener("click", countBikesPerStation);

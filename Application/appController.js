@@ -15,6 +15,28 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
+router.post('/station/insert', async (req, res) => {
+    const { StreetAddress, PostalCode, StationName } = req.body;
+
+    const result = await appService.insertStation(
+        StreetAddress,
+        PostalCode,
+        StationName
+    );
+
+    if (result.success) {
+        res.json({
+            success: true,
+            message: "Station inserted successfully."
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: result.message
+        });
+    }
+});
+
 router.post("/bike/update-status", async (req, res) => {
     const { bikeID, newStatus } = req.body;
     const result = await appService.updateBikeStatus(bikeID, newStatus);
