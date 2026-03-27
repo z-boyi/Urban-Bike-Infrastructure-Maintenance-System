@@ -71,3 +71,46 @@ async function searchBikes(event) {
         tableBody.innerHTML = `<tr><td colspan="7">Error searching bikes</td></tr>`;
     }
 }
+
+// Count bikes per station
+async function countBikesPerStation() {
+    const response = await fetch("/bike/group-by-station", {
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+    const tableBody = document.querySelector("#groupByBikeTable tbody");
+
+    tableBody.innerHTML = "";
+
+    if (responseData.success) {
+        const rows = responseData.data;
+
+        if (!rows || rows.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="3">No data</td></tr>`;
+            return;
+        }
+
+        rows.forEach(row => {
+            const tr = document.createElement("tr");
+
+            row.forEach(value => {
+                const td = document.createElement("td");
+                td.textContent = value;
+                tr.appendChild(td);
+            });
+
+            tableBody.appendChild(tr);
+        });
+    } else {
+        tableBody.innerHTML = `<tr><td colspan="3">Error loading grouped bike counts</td></tr>`;
+    }
+}
+
+
+// Add these into window.onload
+window.onload = function() {
+    document.getElementById("updateBikeForm").addEventListener("submit", updateBikeStatus);
+    document.getElementById("searchBikeForm").addEventListener("submit", searchBikes);
+    document.getElementById("countBikesBtn").addEventListener("click", countBikesPerStation);
+};
