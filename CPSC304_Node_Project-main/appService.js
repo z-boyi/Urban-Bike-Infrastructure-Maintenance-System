@@ -399,7 +399,14 @@ async function fetchMaintenanceTask() {
     return await withOracleDB(async (connection) => {
     const result = await connection.execute(
             `
-            SELECT * FROM MaintenanceTask
+            SELECT 
+                TaskID,
+                MaintenanceID,
+                TO_CHAR(Duration) AS Duration,
+                StartTime,
+                EndTime,
+                TechnicianID
+            FROM MaintenanceTask
             `
     )
 

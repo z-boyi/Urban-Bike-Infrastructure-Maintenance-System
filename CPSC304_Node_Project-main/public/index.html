@@ -8,7 +8,7 @@
     <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
     <!-- <link rel="stylesheet" href="styles.css">   -->
 
-    <title>Database Application</title>
+    <title>Urban Bike Infrastructure Maintenance System</title>
 </head>
 <body>
     <!-- ===================================================================================== -->
@@ -24,15 +24,142 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <!-- Show 'Demotable'. 
+
+    <!-- Update bike status -->
+    <h2>Update Bike Status</h2>
+    <form id="updateBikeForm">
+        Bike ID: <input type="text" id="updateBikeID" required> <br><br>
+        New Status: <input type="text" id="updateStatus" required> <br><br>
+        <button type="submit">Update</button>
+    </form>
+    <div id="updateBikeMsg"></div>
+    
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <!-- Search bikes -->
+    <h2>Search Bikes</h2>
+    <form id="searchBikeForm">
+        Status: <input type="text" id="searchStatus"> <br><br>
+        Brand: <input type="text" id="searchBrand"> <br><br>
+        Postal Code: <input type="text" id="searchPostalCode"> <br><br>
+        <button type="submit">Search</button>
+    </form>
+
+    <table id="searchBikeTable" border="1">
+        <thead>
+            <tr>
+                <th>BikeID</th>
+                <th>Brand</th>
+                <th>LastServiceDate</th>
+                <th>DeploymentDate</th>
+                <th>Status</th>
+                <th>StreetAddress</th>
+                <th>PostalCode</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <!-- Count bikes per station -->
+    <h2>Count Bikes Per Station</h2>
+    <button id="countBikesBtn">Count Bikes Per Station</button>
+
+    <table id="groupByBikeTable" border="1">
+        <thead>
+            <tr>
+                <th>StreetAddress</th>
+                <th>PostalCode</th>
+                <th>BikeCount</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    
+    <!-- Delete issue record -->
+    <h2>Delete Issue Record</h2>
+
+    <form id="deleteIssueForm">
+        Issue ID: 
+        <input type="text" id="deleteIssueId" placeholder="Enter IssueID (e.g. I001)" required>
+        <br><br>
+    
+        <button type="submit">Delete</button>
+    </form>
+    
+    <div id="deleteIssueMsg"></div>
+    
+    <br><hr><br> <!-- ========================================================================= -->
+    
+
+    <!-- Issue project -->
+    <h2>Issue Projection (Select Attributes)</h2>
+
+    <form id="projectionForm">
+
+        <label><input type="checkbox" value="IssueID"> IssueID</label>
+        <label><input type="checkbox" value="ReportTime"> ReportTime</label>
+        <label><input type="checkbox" value="ConditionScore"> ConditionScore</label>
+        <label><input type="checkbox" value="Description"> Description</label>
+        <label><input type="checkbox" value="BikeID"> BikeID</label>
+        <label><input type="checkbox" value="MaintenanceID"> MaintenanceID</label>
+        <label><input type="checkbox" value="InspectorID"> InspectorID</label>
+        <label><input type="checkbox" value="Result"> Result</label>
+
+        <br><br>
+        <button type="submit">Run Projection</button>
+    </form>
+
+    <br>
+
+    <table id="projectionTable" border="1">
+        <thead>
+            <tr id="projectionHeader"></tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <!-- Find BikeID with many issues-->
+    <h2>Find BikeID With Many Issues</h2>
+
+    <button id="BidWIssues"> Find </button>
+    <br><br>
+    <table id="bikesTable" border="1">
+        <thead>
+            <tr>
+                <th>BikeID</th>
+                <th>Issue Count</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+
+    <!-- Show maintenance tasks
         Data will be fetched and inserted here dynamically using JavaScript. -->
-    <h2>Show Demotable</h2>
-    <table id="demotable" border="1">
+    <h2>Show Maintenance Tasks</h2>
+    <table id="MaintenanceTask" border="1">
         <thead>
             <tr>
                 <!--Table head, need to be adjusted accordingly to align with your own.-->
-                <th>ID</th>
-                <th>Name</th>
+                <th>TaskID</th>
+                <th>MaintenanceID</th>
+                <th>Duration</th>
+                <th>StartTime</th>
+                <th>EndTime</th>
+                <th>TechnicianID</th>
             </tr>
         </thead>
         <tbody>
@@ -41,18 +168,13 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Reset Demotable</h2>
-    <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
-    <button id="resetDemotable"> reset </button> <br>
-    <!-- A placeholder to display messages related to the reset operation. -->
-    <div id="resetResultMsg"></div>
 
-    <br><hr><br> <!-- ========================================================================= -->
-
-    <h2> Insert Values into DemoTable </h2>
-    <form id="insertDemotable">
-        ID: <input type="number" id="insertId" placeholder="Enter ID" required> <br><br>
-        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>
+    <!-- Insert a given maintenance task -->
+    <h2> Insert A New Task</h2>
+    <form id="insertMaintenanceTask">
+        TaskID: <input type="text" id="insertTaskID" placeholder="Enter TaskID (e.g. T001)" required> <br><br>
+        MaintenanceID: <input type="text" id="insertMaintenanceID" placeholder="Enter MaintenanceID (e.g. M001)" maxlength="4" required> <br><br>
+        TechnicianID: <input type="text" id="insertTechnicianID" placeholder="Enter TechnicianID (e.g. T001)" maxlength="4" required> <br><br>
 
         <button type="submit"> insert </button> <br>
     </form>
@@ -60,23 +182,36 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Update Name in DemoTable</h2>
-    <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
-    <form id="updataNameDemotable">
-        Old Name: <input type="text" id="updateOldName" placeholder="Enter Old Name" required> <br><br>
-        New Name: <input type="text" id="updateNewName" placeholder="Enter New Name" maxlength="20"> <br><br>
 
-        <button type="submit"> update </button> <br>
+    <!-- Get tasks by technician ID -->
+    <h2>Get Tasks By Technician ID</h2>
+    <p>Please enter a technician ID</p>
+    <form id="getTasksByTechnicianID">
+        TechnicianID: <input type="text" id="queryTechnicianID" placeholder="Enter TechnicianID (e.g. T001)" maxlength="4" required> <br><br>
+
+        <button type="submit"> insert </button> <br>
     </form>
-    <!-- A placeholder to display messages related to the update operation. -->
-    <div id="updateNameResultMsg"></div>
+    <div id="queryResultMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Count the Tuples in DemoTable</h2>
-    <button id="countDemotable"> count </button> <br><br>
+
+    <!-- Get technicians above average workload-->
+    <h2>Get Technicians Above Average Workload</h2>
+    <button id="getTechnicianAboveAverageWorkload"> Extract </button> <br><br>
+    <!-- A placeholder to display messages related to the update operation. -->
+    <div id="aboveAvgWorkloadMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <!-- Get technicians work on all tasks-->
+    <h2>Get Technicians Work On All Tasks</h2>
+    <button id="getTechnicianWorkOnAllTasks"> Extract </button> <br><br>
     <!-- A placeholder to display the count result. -->
-    <div id="countResultMsg"></div> <br>
+    <div id="workOnAllMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
