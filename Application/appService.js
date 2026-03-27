@@ -146,6 +146,100 @@ async function fetchStations() {
     });
 }
 
+// INSERT Query: Insert Bike
+async function insertBike(BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `
+            INSERT INTO Bike 
+            (BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode)
+            VALUES (
+                :BikeID,
+                :Brand,
+                TO_DATE(:LastServiceDate, 'YYYY-MM-DD'),
+                TO_DATE(:DeploymentDate, 'YYYY-MM-DD'),
+                :Status,
+                :StreetAddress,
+                :PostalCode
+    )
+            `,
+            { BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode },
+            { autoCommit: true }
+        );
+
+        return {
+            success: result.rowsAffected && result.rowsAffected > 0,
+            rowsAffected: result.rowsAffected
+        };
+
+    }).catch((error) => {
+        console.error("INSERT BIKE ERROR");
+        console.error("Input:", {
+            BikeID,
+            Brand,
+            LastServiceDate,
+            DeploymentDate,
+            Status,
+            StreetAddress,
+            PostalCode
+        });
+        console.error("Oracle error number:", error.errorNum);
+        console.error("Oracle message:", error.message);
+
+        if (error.errorNum === 1) {
+            return {
+                success: false,
+                message: "BikeID already exists.",
+                errorCode: error.errorNum,
+                details: error.message
+            };
+        }
+
+        if (error.errorNum === 2291) {
+            return {
+                success: false,
+                message: "Station does not exist. Please use an existing StreetAddress and PostalCode.",
+                errorCode: error.errorNum,
+                details: error.message
+            };
+        }
+
+        if (error.errorNum === 1400) {
+            return {
+                success: false,
+                message: "A required field is missing.",
+                errorCode: error.errorNum,
+                details: error.message
+            };
+        }
+
+        if (error.errorNum === 12899) {
+            return {
+                success: false,
+                message: "One of the input values is too long.",
+                errorCode: error.errorNum,
+                details: error.message
+            };
+        }
+
+        if (error.errorNum === 1840 || error.errorNum === 1861) {
+            return {
+                success: false,
+                message: "Date format is invalid.",
+                errorCode: error.errorNum,
+                details: error.message
+            };
+        }
+
+        return {
+            success: false,
+            message: "Insert failed due to a database error.",
+            errorCode: error.errorNum || null,
+            details: error.message
+        };
+    });
+}
+
 
 // UPDATE QUERY: Update a bike's status by BikeID 
 async function updateBikeStatus(bikeID, newStatus) {
@@ -482,6 +576,7 @@ module.exports = {
     testOracleConnection,
     insertStation,
     fetchStations,
+    insertBike,
     updateBikeStatus,
     searchBikes,
     countBikesPerStation,

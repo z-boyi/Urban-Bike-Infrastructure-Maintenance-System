@@ -54,7 +54,33 @@
     <table id="StationTable" border="1">
         <thead></thead>
         <tbody></tbody>
-    </table>    
+    </table>
+    
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!-- Insert New Bike -->
+    <h2>Insert New Bike</h2>
+    <form id="insertBikeForm">
+        BikeID: <input type="text" id="bikeID" placeholder="Enter BikeID (e.g. B001)" required> <br><br>
+        Brand: <input type="text" id="brand" placeholder="Enter brand (e.g. Trek)"> <br><br>
+        Last Service Date: <input type="date" id="lastServiceDate"> <br><br>
+        Deployment Date: <input type="date" id="deploymentDate"> <br><br>
+        Status: 
+        <select id="status" required>
+            <option value="">Select Status</option>
+            <option value="Available">Available</option>
+            <option value="In Use">In Use</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Out of Service">Out of Service</option>
+        </select>
+        <br><br>
+        Street Address: <input type="text" id="streetAddress" placeholder="Enter street (e.g. 123 Main St)"> <br><br>
+        Postal Code: <input type="text" id="postalCode" placeholder="Enter postal code (e.g. V6T1Z4)"> <br><br>
+    
+        <button type="submit">Insert</button>
+    </form>
+    
+    <div id="insertBikeMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
 

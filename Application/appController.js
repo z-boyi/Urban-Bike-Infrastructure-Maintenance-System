@@ -54,6 +54,28 @@ router.get('/station/fetch', async (req, res) => {
     }
 });
 
+router.post('/bike/insert', async (req, res) => {
+    const { BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode } = req.body;
+
+    const insertResult = await appService.insertBike(
+        BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode
+    );
+
+    if (insertResult.success) {
+        res.json({
+            success: true,
+            message: "Bike inserted successfully."
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: insertResult.message,
+            errorCode: insertResult.errorCode,
+            details: insertResult.details
+        });
+    }
+});
+
 router.post("/bike/update-status", async (req, res) => {
     const { bikeID, newStatus } = req.body;
     const result = await appService.updateBikeStatus(bikeID, newStatus);

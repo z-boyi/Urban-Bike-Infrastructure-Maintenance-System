@@ -110,6 +110,45 @@ async function fetchStations() {
     }
 }
 
+// Insert a new bike
+async function insertBike(event) {
+    event.preventDefault();
+
+    const BikeID = document.getElementById('bikeID').value;
+    const Brand = document.getElementById('brand').value;
+    const LastServiceDate = document.getElementById('lastServiceDate').value;
+    const DeploymentDate = document.getElementById('deploymentDate').value;
+    const Status = document.getElementById('status').value;
+    const StreetAddress = document.getElementById('streetAddress').value;
+    const PostalCode = document.getElementById('postalCode').value;
+
+    const response = await fetch('/bike/insert', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            BikeID,
+            Brand,
+            LastServiceDate,
+            DeploymentDate,
+            Status,
+            StreetAddress,
+            PostalCode
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('insertBikeMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "Bike inserted successfully!";
+    } else {
+        messageElement.textContent =
+            responseData.message +
+            (responseData.errorCode ? ` (Code: ${responseData.errorCode})` : "");
+        console.log("Insert bike error details:", responseData.details);
+    }
+}
+
 
 // Update bike status by BikeID
 async function updateBikeStatus(event) {
@@ -527,6 +566,7 @@ window.onload = function() {
 
     document.getElementById("insertStationForm").addEventListener("submit", insertStation);
     document.getElementById("showStationsBtn").addEventListener("click", fetchStations);
+    document.getElementById("insertBikeForm").addEventListener("submit", insertBike);
     document.getElementById("updateBikeForm").addEventListener("submit", updateBikeStatus);
     document.getElementById("searchBikeForm").addEventListener("submit", searchBikes);
     document.getElementById("countBikesBtn").addEventListener("click", countBikesPerStation);
