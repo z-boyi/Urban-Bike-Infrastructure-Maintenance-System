@@ -119,6 +119,33 @@ async function insertStation(StreetAddress, PostalCode, StationName) {
     });
 }
 
+// fetch the BikeStation table
+async function fetchStations() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `
+            SELECT StreetAddress, PostalCode, StationName
+            FROM BikeStation
+            ORDER BY PostalCode, StreetAddress
+            `
+        );
+
+        return {
+            success: true,
+            data: result.rows,
+            columns: result.metaData.map(col => col.name)
+        };
+    }).catch((error) => {
+        console.error("FETCH STATIONS ERROR");
+        console.error("Message:", error.message);
+
+        return {
+            success: false,
+            message: "Failed to fetch stations."
+        };
+    });
+}
+
 
 // UPDATE QUERY: Update a bike's status by BikeID 
 async function updateBikeStatus(bikeID, newStatus) {
@@ -454,6 +481,7 @@ module.exports = {
     fetchBikes,
     testOracleConnection,
     insertStation,
+    fetchStations,
     updateBikeStatus,
     searchBikes,
     countBikesPerStation,

@@ -37,6 +37,23 @@ router.post('/station/insert', async (req, res) => {
     }
 });
 
+router.get('/station/fetch', async (req, res) => {
+    const queryResult = await appService.fetchStations();
+
+    if (queryResult.success) {
+        res.json({
+            success: true,
+            data: queryResult.data,
+            columns: queryResult.columns
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: queryResult.message
+        });
+    }
+});
+
 router.post("/bike/update-status", async (req, res) => {
     const { bikeID, newStatus } = req.body;
     const result = await appService.updateBikeStatus(bikeID, newStatus);

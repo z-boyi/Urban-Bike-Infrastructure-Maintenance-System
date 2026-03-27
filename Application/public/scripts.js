@@ -75,6 +75,41 @@ async function insertStation(event) {
     }
 }
 
+// Fetch stations and display them
+async function fetchStations() {
+    const tableElement = document.getElementById('StationTable');
+    const tableHead = tableElement.querySelector('thead');
+    const tableBody = tableElement.querySelector('tbody');
+    const messageElement = document.getElementById('stationMsg');
+
+    const response = await fetch('/station/fetch');
+    const responseData = await response.json();
+
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
+
+    if (responseData.success) {
+        messageElement.textContent = "Showing all stations.";
+
+        const headerRow = tableHead.insertRow();
+        responseData.columns.forEach(col => {
+            const th = document.createElement('th');
+            th.textContent = col;
+            headerRow.appendChild(th);
+        });
+
+        responseData.data.forEach(rowData => {
+            const row = tableBody.insertRow();
+            rowData.forEach(field => {
+                const cell = row.insertCell();
+                cell.textContent = field;
+            });
+        });
+    } else {
+        messageElement.textContent = responseData.message || "Failed to load stations.";
+    }
+}
+
 
 // Update bike status by BikeID
 async function updateBikeStatus(event) {
@@ -491,6 +526,7 @@ window.onload = function() {
     checkDbConnection();
 
     document.getElementById("insertStationForm").addEventListener("submit", insertStation);
+    document.getElementById("showStationsBtn").addEventListener("click", fetchStations);
     document.getElementById("updateBikeForm").addEventListener("submit", updateBikeStatus);
     document.getElementById("searchBikeForm").addEventListener("submit", searchBikes);
     document.getElementById("countBikesBtn").addEventListener("click", countBikesPerStation);
