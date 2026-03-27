@@ -263,7 +263,7 @@ async function getBikesWithManyIssues() {
             SELECT BikeID, COUNT(*) AS IssueCount
             FROM IssueRecord
             GROUP BY BikeID
-            HAVING COUNT(*) > 1
+            HAVING COUNT(*) >= 1
             `
         );
 

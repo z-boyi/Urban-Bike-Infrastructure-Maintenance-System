@@ -1,0 +1,59 @@
+<br><hr><br> <!-- ========================================================================= -->
+
+<h2>Delete Issue Record</h2>
+
+<form id="deleteIssueForm">
+    Issue ID: 
+    <input type="text" id="deleteIssueId" placeholder="Enter IssueID (e.g. I001)" required>
+    <br><br>
+
+    <button type="submit">Delete</button>
+</form>
+
+<div id="deleteIssueMsg"></div>
+
+<br><hr><br> <!-- ========================================================================= -->
+
+<h2>Issue Projection (Select Attributes)</h2>
+
+<form id="projectionForm">
+
+    <label><input type="checkbox" value="IssueID"> IssueID</label>
+    <label><input type="checkbox" value="ReportTime"> ReportTime</label>
+    <label><input type="checkbox" value="ConditionScore"> ConditionScore</label>
+    <label><input type="checkbox" value="Description"> Description</label>
+    <label><input type="checkbox" value="BikeID"> BikeID</label>
+    <label><input type="checkbox" value="MaintenanceID"> MaintenanceID</label>
+    <label><input type="checkbox" value="InspectorID"> InspectorID</label>
+    <label><input type="checkbox" value="Result"> Result</label>
+
+    <br><br>
+    <button type="submit">Run Projection</button>
+</form>
+
+<br>
+
+<table id="projectionTable" border="1">
+    <thead>
+        <tr id="projectionHeader"></tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+
+
+<br><hr><br> <!-- ========================================================================= -->
+
+<h2>Find BikeID With Many Issues</h2>
+
+<button id="BidWIssues"> Find </button>
+<br><br>
+<table id="bikesTable" border="1">
+    <thead>
+        <tr>
+            <th>BikeID</th>
+            <th>Issue Count</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
