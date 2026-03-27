@@ -36,63 +36,280 @@ async function checkDbConnection() {
     });
 }
 
-// Fetches data from the demotable and displays it.
-async function fetchAndDisplayUsers() {
-    const tableElement = document.getElementById('demotable');
-    const tableBody = tableElement.querySelector('tbody');
+// ==================== Bike-Related Frontend Functions ====================
+// Update bike status by BikeID
+async function updateBikeStatus(event) {
+    event.preventDefault();
 
-    const response = await fetch('/demotable', {
-        method: 'GET'
+    const bikeID = document.getElementById("updateBikeID").value;
+    const newStatus = document.getElementById("updateStatus").value;
+
+    const response = await fetch("/bike/update-status", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ bikeID, newStatus })
     });
 
     const responseData = await response.json();
-    const demotableContent = responseData.data;
+    const messageElement = document.getElementById("updateBikeMsg");
 
-    // Always clear old, already fetched data before new fetching process.
-    if (tableBody) {
-        tableBody.innerHTML = '';
+    if (responseData.success) {
+        if (responseData.rowsAffected > 0) {
+            messageElement.textContent = "Bike status updated successfully!";
+        } else {
+            messageElement.textContent = "No bike found with that BikeID.";
+        }
+    } else {
+        messageElement.textContent = responseData.message || "Error updating bike status!";
+    }
+}
+
+// Search bikes by Status Brand and Postal Code
+async function searchBikes(event) {
+    event.preventDefault();
+
+    const status = document.getElementById("searchStatus").value;
+    const brand = document.getElementById("searchBrand").value;
+    const postalCode = document.getElementById("searchPostalCode").value;
+
+    const response = await fetch("/bike/search", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ status, brand, postalCode })
+    });
+
+    const responseData = await response.json();
+    const tableBody = document.querySelector("#searchBikeTable tbody");
+
+    tableBody.innerHTML = "";
+
+    if (responseData.success) {
+        const rows = responseData.data;
+
+        if (!rows || rows.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="7">No matching bikes found</td></tr>`;
+            return;
+        }
+
+        rows.forEach(row => {
+            const tr = document.createElement("tr");
+
+            row.forEach(value => {
+                const td = document.createElement("td");
+                td.textContent = value;
+                tr.appendChild(td);
+            });
+
+            tableBody.appendChild(tr);
+        });
+    } else {
+        tableBody.innerHTML = `<tr><td colspan="7">Error searching bikes</td></tr>`;
+    }
+}
+
+// Count bikes per station
+async function countBikesPerStation() {
+    const response = await fetch("/bike/group-by-station", {
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+    const tableBody = document.querySelector("#groupByBikeTable tbody");
+
+    tableBody.innerHTML = "";
+
+    if (responseData.success) {
+        const rows = responseData.data;
+
+        if (!rows || rows.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="3">No data</td></tr>`;
+            return;
+        }
+
+        rows.forEach(row => {
+            const tr = document.createElement("tr");
+
+            row.forEach(value => {
+                const td = document.createElement("td");
+                td.textContent = value;
+                tr.appendChild(td);
+            });
+
+            tableBody.appendChild(tr);
+        });
+    } else {
+        tableBody.innerHTML = `<tr><td colspan="3">Error loading grouped bike counts</td></tr>`;
+    }
+}
+
+// ==================== Issue-Related Frontend Functions ====================
+//Delete Issue by ID
+async function deleteIssue(event) {
+    event.preventDefault();
+
+    const issueId = document.getElementById("deleteIssueId").value;
+
+    const response = await fetch("/issue/delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ issueId })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById("deleteIssueMsg");
+
+    if (responseData.success) {
+        messageElement.textContent = "Issue deleted successfully!";
+    } else {
+        messageElement.textContent = "Error deleting issue!";
+    }
+}
+
+//Project Issues by Atrributes
+async function runProjection(event) {
+    event.preventDefault();
+
+    const checkboxes = document.querySelectorAll("#projectionForm input:checked");
+
+    const attributes = Array.from(checkboxes).map(cb => cb.value);
+
+    if (attributes.length === 0) {
+        alert("Please select at least one attribute");
+        return;
     }
 
-    demotableContent.forEach(user => {
+
+    const response = await fetch("/issue/projection", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ attributes })
+    });
+
+    const responseData = await response.json();
+    const tableBody = document.querySelector("#projectionTable tbody");
+    const headerRow = document.getElementById("projectionHeader");
+
+
+    tableBody.innerHTML = "";
+    headerRow.innerHTML = "";
+
+
+    attributes.forEach(attr => {
+        const th = document.createElement("th");
+        th.textContent = attr;
+        headerRow.appendChild(th);
+    });
+
+
+    const rows = responseData.data;
+
+    if (!rows || rows.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="${attributes.length}">No data</td></tr>`;
+        return;
+    }
+
+    rows.forEach(row => {
+        const tr = document.createElement("tr");
+
+        row.forEach(value => {
+            const td = document.createElement("td");
+            td.textContent = value;
+            tr.appendChild(td);
+        });
+
+        tableBody.appendChild(tr);
+    });
+}
+
+//Return bikeID With many issues
+async function BidWIssues() {
+    console.log("clicked");
+
+    const response = await fetch(`/issue/bike-many-issues?t=${Date.now()}`);
+    const responseData = await response.json();
+
+    console.log("DATA:", responseData);
+
+    const tableBody = document.querySelector("#bikesTable tbody");
+
+    if (!tableBody) {
+        console.error("tableBody NOT FOUND");
+        return;
+    }
+
+    tableBody.innerHTML = "";
+
+    if (responseData.success) {
+        const tuples = responseData.data;
+
+        if (!tuples || tuples.length === 0) {
+            tableBody.innerHTML = "<tr><td colspan='2'>No data</td></tr>";
+            return;
+        }
+
+        tuples.forEach(row => {
+            const tr = document.createElement("tr");
+
+            const td1 = document.createElement("td");
+            td1.textContent = row[0];
+
+            const td2 = document.createElement("td");
+            td2.textContent = row[1];
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+
+            tableBody.appendChild(tr);
+        });
+    }
+}
+
+// ==================== Task/Technician-related Frontend Functions ====================
+// Fetches data from MaintenanceTask and displays it.
+async function fetchMaintenanceTask() {
+    const tableElement = document.getElementById('MaintenanceTask');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/maintenance-task/fetch');
+    const responseData = await response.json();
+
+    tableBody.innerHTML = '';
+
+    responseData.data.forEach(rowData => {
         const row = tableBody.insertRow();
-        user.forEach((field, index) => {
-            const cell = row.insertCell(index);
+
+        rowData.forEach(field => {
+            const cell = row.insertCell();
             cell.textContent = field;
         });
     });
 }
 
-// This function resets or initializes the demotable.
-async function resetDemotable() {
-    const response = await fetch("/initiate-demotable", {
-        method: 'POST'
-    });
-    const responseData = await response.json();
-
-    if (responseData.success) {
-        const messageElement = document.getElementById('resetResultMsg');
-        messageElement.textContent = "demotable initiated successfully!";
-        fetchTableData();
-    } else {
-        alert("Error initiating table!");
-    }
-}
-
-// Inserts new records into the demotable.
-async function insertDemotable(event) {
+// Insert a given maintenance task
+async function insertMaintenanceTask(event) {
     event.preventDefault();
 
-    const idValue = document.getElementById('insertId').value;
-    const nameValue = document.getElementById('insertName').value;
+    const TaskID = document.getElementById('insertTaskID').value;
+    const MaintenanceID = document.getElementById('insertMaintenanceID').value;
+    const TechnicianID = document.getElementById('insertTechnicianID').value;
 
-    const response = await fetch('/insert-demotable', {
+    const response = await fetch('/maintenance-task/insert', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            id: idValue,
-            name: nameValue
+            TaskID: TaskID,
+            MaintenanceID: MaintenanceID,
+            TechnicianID: TechnicianID
         })
     });
 
@@ -101,56 +318,129 @@ async function insertDemotable(event) {
 
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
-        fetchTableData();
+        fetchMaintenanceTask();
     } else {
         messageElement.textContent = "Error inserting data!";
     }
 }
 
-// Updates names in the demotable.
-async function updateNameDemotable(event) {
-    event.preventDefault();
+// Get tasks by technician id
+async function getTasksByTechnicianID() {
+    const TechnicianID = document.getElementById('queryTechnicianID').value;
 
-    const oldNameValue = document.getElementById('updateOldName').value;
-    const newNameValue = document.getElementById('updateNewName').value;
-
-    const response = await fetch('/update-name-demotable', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            oldName: oldNameValue,
-            newName: newNameValue
-        })
-    });
-
-    const responseData = await response.json();
-    const messageElement = document.getElementById('updateNameResultMsg');
-
-    if (responseData.success) {
-        messageElement.textContent = "Name updated successfully!";
-        fetchTableData();
-    } else {
-        messageElement.textContent = "Error updating name!";
-    }
-}
-
-// Counts rows in the demotable.
-// Modify the function accordingly if using different aggregate functions or procedures.
-async function countDemotable() {
-    const response = await fetch("/count-demotable", {
+    const response = await fetch(`/technician/tasks?TechnicianID=${TechnicianID}`, {
         method: 'GET'
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('countResultMsg');
+    const messageElement = document.getElementById('queryResultMsg');
 
     if (responseData.success) {
-        const tupleCount = responseData.count;
-        messageElement.textContent = `The number of tuples in demotable: ${tupleCount}`;
+        messageElement.textContent = "Here are the tasks assigned to this technician";
+        
+        const tableElement = document.getElementById('maintenanceTask');
+        const tableHead = tableElement.querySelector('thead');
+        const tableBody = tableElement.querySelector('tbody');
+
+        tableHead.innerHTML = '';
+        tableBody.innerHTML = '';
+
+        const headerRow = tableHead.insertRow();
+        responseData.columns.forEach(col => {
+            const th = document.createElement('th');
+            th.textContent = col;
+            headerRow.appendChild(th);
+        });
+
+        responseData.data.forEach(rowData => {
+            const row = tableBody.insertRow();
+            rowData.forEach(field => {
+                const cell = row.insertCell();
+                cell.textContent = field;
+            });
+        });
+
     } else {
-        alert("Error in count demotable!");
+        messageElement.textContent = "Error querying data!";
+    }
+}
+
+// Get technicians above average workload
+async function getTechnicianAboveAverageWorkload() {
+    const response = await fetch('/technician/above-average-workload', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+
+    const messageElement = document.getElementById('aboveAvgWorkloadMsg');
+    const tableElement = document.getElementById('MaintenanceTask');
+
+    const tableHead = tableElement.querySelector('thead');
+    const tableBody = tableElement.querySelector('tbody');
+
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
+
+    if (responseData.success) {
+        messageElement.textContent = "Technicians with above-average workload";
+
+        const headerRow = tableHead.insertRow();
+        responseData.columns.forEach(col => {
+            const th = document.createElement('th');
+            th.textContent = col;
+            headerRow.appendChild(th);
+        });
+
+        responseData.data.forEach(rowData => {
+            const row = tableBody.insertRow();
+            rowData.forEach(field => {
+                const cell = row.insertCell();
+                cell.textContent = field;
+            });
+        });
+
+    } else {
+        messageElement.textContent = "Error querying data!";
+    }
+}
+
+// Get technicians work on all tasks
+async function getTechnicianWorkOnAllTasks() {
+    const response = await fetch('/technician/working-on-all-tasks', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('workOnAllMsg');
+
+    const tableElement = document.getElementById('MaintenanceTask');
+    const tableHead = tableElement.querySelector('thead');
+    const tableBody = tableElement.querySelector('tbody');
+
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
+
+    if (responseData.success) {
+        messageElement.textContent = "Technicians who worked on all tasks";
+
+        const headerRow = tableHead.insertRow();
+        responseData.columns.forEach(col => {
+            const th = document.createElement('th');
+            th.textContent = col;
+            headerRow.appendChild(th);
+        });
+
+        responseData.data.forEach(rowData => {
+            const row = tableBody.insertRow();
+            rowData.forEach(field => {
+                const cell = row.insertCell();
+                cell.textContent = field;
+            });
+        });
+
+    } else {
+        messageElement.textContent = "Error querying data!";
     }
 }
 
@@ -160,15 +450,19 @@ async function countDemotable() {
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     checkDbConnection();
-    fetchTableData();
-    document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
-    document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
-    document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
-    document.getElementById("countDemotable").addEventListener("click", countDemotable);
-};
 
-// General function to refresh the displayed table data. 
-// You can invoke this after any table-modifying operation to keep consistency.
-function fetchTableData() {
-    fetchAndDisplayUsers();
-}
+    document.getElementById("updateBikeForm").addEventListener("submit", updateBikeStatus);
+    document.getElementById("searchBikeForm").addEventListener("submit", searchBikes);
+    document.getElementById("countBikesBtn").addEventListener("click", countBikesPerStation);
+
+    document.getElementById("BidWIssues").addEventListener("click", BidWIssues);
+    document.getElementById("deleteIssueForm").addEventListener("submit", deleteIssue);
+    document.getElementById("projectionForm").addEventListener("submit", runProjection);
+
+    fetchMaintenanceTask();
+    document.getElementById("insertMaintenanceTask").addEventListener("submit", insertMaintenanceTask);
+    document.getElementById("getTasksByTechnicianID").addEventListener("submit", getTasksByTechnicianID);
+    document.getElementById("getTechnicianAboveAverageWorkload").addEventListener("click", getTechnicianAboveAverageWorkload);
+    document.getElementById("getTechnicianWorkOnAllTasks").addEventListener("click", getTechnicianWorkOnAllTasks);
+
+};
