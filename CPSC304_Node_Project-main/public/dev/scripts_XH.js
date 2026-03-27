@@ -1,23 +1,16 @@
-// Fetches data from the demotable and displays it.
+// Fetches data from MaintenanceTask and displays it.
 async function fetchMaintenanceTask() {
-    const tableHead = tableElement.querySelector('thead');
+    const tableElement = document.getElementById('MaintenanceTask');
     const tableBody = tableElement.querySelector('tbody');
 
     const response = await fetch('/maintenance-task/fetch');
     const responseData = await response.json();
 
-    tableHead.innerHTML = '';
     tableBody.innerHTML = '';
-
-    const headerRow = tableHead.insertRow();
-    responseData.columns.forEach(col => {
-        const th = document.createElement('th');
-        th.textContent = col;
-        headerRow.appendChild(th);
-    });
 
     responseData.data.forEach(rowData => {
         const row = tableBody.insertRow();
+
         rowData.forEach(field => {
             const cell = row.insertCell();
             cell.textContent = field;
@@ -29,9 +22,9 @@ async function fetchMaintenanceTask() {
 async function insertMaintenanceTask(event) {
     event.preventDefault();
 
-    const TaskID = document.getElementById('TaskID').value;
-    const MaintenanceID = document.getElementById('MaintenanceID').value;
-    const TechnicianID = document.getElementById('TechnicianID').value;
+    const TaskID = document.getElementById('insertTaskID').value;
+    const MaintenanceID = document.getElementById('insertMaintenanceID').value;
+    const TechnicianID = document.getElementById('insertTechnicianID').value;
 
     const response = await fetch('/maintenance-task/insert', {
         method: 'POST',
@@ -46,7 +39,7 @@ async function insertMaintenanceTask(event) {
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('queryResultMsg');
+    const messageElement = document.getElementById('insertResultMsg');
 
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
@@ -58,7 +51,7 @@ async function insertMaintenanceTask(event) {
 
 // Get tasks by technician id
 async function getTasksByTechnicianID() {
-    const TechnicianID = document.getElementById('TechnicianID').value;
+    const TechnicianID = document.getElementById('queryTechnicianID').value;
 
     const response = await fetch(`/technician/tasks?TechnicianID=${TechnicianID}`, {
         method: 'GET'
@@ -105,8 +98,8 @@ async function getTechnicianAboveAverageWorkload() {
 
     const responseData = await response.json();
 
-    const messageElement = document.getElementById('queryResultMsg');
-    const tableElement = document.getElementById('maintenanceTask');
+    const messageElement = document.getElementById('aboveAvgWorkloadMsg');
+    const tableElement = document.getElementById('MaintenanceTask');
 
     const tableHead = tableElement.querySelector('thead');
     const tableBody = tableElement.querySelector('tbody');
@@ -144,9 +137,9 @@ async function getTechnicianWorkOnAllTasks() {
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('queryResultMsg');
+    const messageElement = document.getElementById('workOnAllMsg');
 
-    const tableElement = document.getElementById('maintenanceTask');
+    const tableElement = document.getElementById('MaintenanceTask');
     const tableHead = tableElement.querySelector('thead');
     const tableBody = tableElement.querySelector('tbody');
 
@@ -175,3 +168,11 @@ async function getTechnicianWorkOnAllTasks() {
         messageElement.textContent = "Error querying data!";
     }
 }
+
+window.onload = function() {
+    fetchMaintenanceTask();
+    document.getElementById("insertMaintenanceTask").addEventListener("submit", insertMaintenanceTask);
+    document.getElementById("getTasksByTechnicianID").addEventListener("submit", getTasksByTechnicianID);
+    document.getElementById("getTechnicianAboveAverageWorkload").addEventListener("click", getTechnicianAboveAverageWorkload);
+    document.getElementById("getTechnicianWorkOnAllTasks").addEventListener("click", getTechnicianWorkOnAllTasks);
+};
