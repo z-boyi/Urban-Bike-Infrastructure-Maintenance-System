@@ -1,24 +1,25 @@
 // Fetches data from the demotable and displays it.
 async function fetchMaintenanceTask() {
-    const tableElement = document.getElementById('maintenanceTask');
+    const tableHead = tableElement.querySelector('thead');
     const tableBody = tableElement.querySelector('tbody');
 
-    const response = await fetch('/maintenance-task/fetch', {
-        method: 'GET'
+    const response = await fetch('/maintenance-task/fetch');
+    const responseData = await response.json();
+
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
+
+    const headerRow = tableHead.insertRow();
+    responseData.columns.forEach(col => {
+        const th = document.createElement('th');
+        th.textContent = col;
+        headerRow.appendChild(th);
     });
 
-    const responseData = await response.json();
-    const demotableContent = responseData.data;
-
-    // Always clear old, already fetched data before new fetching process.
-    if (tableBody) {
-        tableBody.innerHTML = '';
-    }
-
-    demotableContent.forEach(user => {
+    responseData.data.forEach(rowData => {
         const row = tableBody.insertRow();
-        user.forEach((field, index) => {
-            const cell = row.insertCell(index);
+        rowData.forEach(field => {
+            const cell = row.insertCell();
             cell.textContent = field;
         });
     });
@@ -68,6 +69,29 @@ async function getTasksByTechnicianID() {
 
     if (responseData.success) {
         messageElement.textContent = "Here are the tasks assigned to this technician";
+        
+        const tableElement = document.getElementById('maintenanceTask');
+        const tableHead = tableElement.querySelector('thead');
+        const tableBody = tableElement.querySelector('tbody');
+
+        tableHead.innerHTML = '';
+        tableBody.innerHTML = '';
+
+        const headerRow = tableHead.insertRow();
+        responseData.columns.forEach(col => {
+            const th = document.createElement('th');
+            th.textContent = col;
+            headerRow.appendChild(th);
+        });
+
+        responseData.data.forEach(rowData => {
+            const row = tableBody.insertRow();
+            rowData.forEach(field => {
+                const cell = row.insertCell();
+                cell.textContent = field;
+            });
+        });
+
     } else {
         messageElement.textContent = "Error querying data!";
     }
@@ -80,21 +104,68 @@ async function getTechnicianAboveAverageWorkload() {
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('queryResultMsg');
 
+    const messageElement = document.getElementById('queryResultMsg');
     const tableElement = document.getElementById('maintenanceTask');
+
+    const tableHead = tableElement.querySelector('thead');
     const tableBody = tableElement.querySelector('tbody');
 
-    if (tableBody) {
-        tableBody.innerHTML = '';
-    }
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
 
     if (responseData.success) {
         messageElement.textContent = "Technicians with above-average workload";
 
+        const headerRow = tableHead.insertRow();
+        responseData.columns.forEach(col => {
+            const th = document.createElement('th');
+            th.textContent = col;
+            headerRow.appendChild(th);
+        });
+
         responseData.data.forEach(rowData => {
             const row = tableBody.insertRow();
-            rowData.forEach((field, index) => {
+            rowData.forEach(field => {
+                const cell = row.insertCell();
+                cell.textContent = field;
+            });
+        });
+
+    } else {
+        messageElement.textContent = "Error querying data!";
+    }
+}
+
+// Get technicians work on all tasks
+async function getTechnicianWorkOnAllTasks() {
+    const response = await fetch('/technician/working-on-all-tasks', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('queryResultMsg');
+
+    const tableElement = document.getElementById('maintenanceTask');
+    const tableHead = tableElement.querySelector('thead');
+    const tableBody = tableElement.querySelector('tbody');
+
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
+
+    if (responseData.success) {
+        messageElement.textContent = "Technicians who worked on all tasks";
+
+        const headerRow = tableHead.insertRow();
+        responseData.columns.forEach(col => {
+            const th = document.createElement('th');
+            th.textContent = col;
+            headerRow.appendChild(th);
+        });
+
+        responseData.data.forEach(rowData => {
+            const row = tableBody.insertRow();
+            rowData.forEach(field => {
                 const cell = row.insertCell();
                 cell.textContent = field;
             });
