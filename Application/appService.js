@@ -626,9 +626,9 @@ async function fetchMaintenanceTask() {
             SELECT 
                 TaskID,
                 MaintenanceID,
-                TO_CHAR(Duration) AS Duration,
-                StartTime,
-                EndTime,
+                SUBSTR(Duration, 5, 8) AS Duration,
+                TO_CHAR(StartTime, 'YYYY-MM-DD HH24:MI:SS') AS StartTime,
+                TO_CHAR(EndTime, 'YYYY-MM-DD HH24:MI:SS') AS EndTime,
                 TechnicianID
             FROM MaintenanceTask
             `
