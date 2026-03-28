@@ -182,15 +182,7 @@ router.get("/issue/bike-many-issues", async (req, res) => {
 router.post('/maintenance-task/insert', async (req, res) => {
     const { TaskID, MaintenanceID, TechnicianID } = req.body;
     const insertResult = await appService.insertMaintenanceTask(TaskID, MaintenanceID, TechnicianID);
-    if (insertResult) {
-        res.json({ 
-            success: true
-        });
-    } else {
-        res.status(500).json({ 
-            success: false
-        });
-    }
+    res.json(insertResult);
 });
 
 router.get('/technician/tasks', async(req, res) => {
@@ -274,5 +266,12 @@ router.get('/technician/fetch', async(req, res) => {
         });
     }
 })
+
+router.post("/maintenance-task/delete", async (req, res) => {
+    const { TaskID } = req.body;
+    const deleteResult = await appService.deleteMaintenanceTask(TaskID);
+    res.json(deleteResult);
+});
+
 
 module.exports = router;

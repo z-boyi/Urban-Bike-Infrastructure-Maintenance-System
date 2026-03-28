@@ -515,9 +515,9 @@ async function insertMaintenanceTask(TaskID, MaintenanceID, TechnicianID) {
 
         return {success: result.rowsAffected && result.rowsAffected > 0};
 
-    }).catch((error) => {
-        if (error.errorNum === 2291) {
-            return { success: false, message: "MaintenanceID or TechnicianID does not exist." };
+    }).catch((err) => {
+        if (err.errorNum === 1) {
+            return { success: false, message: "TaskID already exists." };
         }
         return { success: false, message: "Insert failed." };
     });
@@ -618,6 +618,8 @@ async function getTechnicianWorkOnAllTasks() {
     });
 }
 
+// Additional queries for better functionality
+
 // fetch the maintence task table
 async function fetchMaintenanceTask() {
     return await withOracleDB(async (connection) => {
@@ -631,6 +633,7 @@ async function fetchMaintenanceTask() {
                 TO_CHAR(EndTime, 'YYYY-MM-DD HH24:MI:SS') AS EndTime,
                 TechnicianID
             FROM MaintenanceTask
+            ORDER BY TaskID
             `
     )
 
@@ -652,11 +655,31 @@ async function fetchTechnician() {
             `
     )
 
-    return {success: true, data: result.rows, columns: result.metaData.map(col => col.name)};
+    return { success: true, data: result.rows, columns: result.metaData.map(col => col.name) };
 
     }).catch(() => {
         return { success: false, message: "Query failed." };
     })
+}
+
+// delete maintenace task
+async function deleteMaintenanceTask(TaskID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `DELETE FROM MaintenanceTask WHERE TaskID = :TaskID`,
+            [ TaskID ],
+            { autoCommit: true }
+        );
+
+        if (result.rowsAffected > 0) {
+            return { success: true };
+        } else {
+            return { success: false, message: "TaskID does not exist." };
+        }
+
+    }).catch(() => {
+        return { success: false, message: "Delete failed." };
+    });
 }
 
 module.exports = {
@@ -677,5 +700,6 @@ module.exports = {
     getTechnicianAboveAverageWorkload,
     getTechnicianWorkOnAllTasks,
     fetchMaintenanceTask,
-    fetchTechnician
+    fetchTechnician,
+    deleteMaintenanceTask
 };

@@ -459,7 +459,7 @@ async function insertMaintenanceTask(event) {
         messageElement.textContent = "Data inserted successfully!";
         fetchMaintenanceTask();
     } else {
-        messageElement.textContent = "Error inserting data!";
+        messageElement.textContent = responseData.message || "Insert failed.";
     }
 }
 
@@ -606,6 +606,30 @@ async function fetchTechnician() {
     });
 }
 
+// delete maintenance task
+async function deleteMaintenanceTask(event) {
+    event.preventDefault();
+    const TaskID = document.getElementById('deleteTaskID').value;
+    const messageElement = document.getElementById("deleteTaskMsg");
+    
+    const response = await fetch("/maintenance-task/delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ TaskID })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        messageElement.textContent = "Task deleted successfully!";
+        fetchMaintenanceTask();
+    } else {
+        messageElement.textContent = data.message;
+    }
+}
+
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -631,5 +655,6 @@ window.onload = function() {
     document.getElementById("getTasksByTechnicianID").addEventListener("submit", getTasksByTechnicianID);
     document.getElementById("getTechnicianAboveAverageWorkload").addEventListener("click", getTechnicianAboveAverageWorkload);
     document.getElementById("getTechnicianWorkOnAllTasks").addEventListener("click", getTechnicianWorkOnAllTasks);
+    document.getElementById("deleteMaintenanceTask").addEventListener('submit', deleteMaintenanceTask);
 
 };
