@@ -34,7 +34,7 @@ CREATE TABLE Bike (
 	Brand VARCHAR(10),
 	LastServiceDate DATE,
 	DeploymentDate DATE,
-	Status VARCHAR(10) NOT NULL,
+	Status VARCHAR(20) NOT NULL,
 	StreetAddress VARCHAR(100),
 	PostalCode CHAR(6),
 	PRIMARY KEY (BikeID),
@@ -220,19 +220,19 @@ INSERT INTO BikeStation VALUES ('654 Maple St','V6T1Z8','Granville Station');
 
 
 -- Bike (RegularBike)
-INSERT INTO Bike VALUES ('B001','Trek',DATE '2025-01-01',DATE '2025-01-10','Active','123 Main St','V6T1Z4');
-INSERT INTO Bike VALUES ('B002','Giant',DATE '2025-01-02',DATE '2025-01-11','Active','123 Main St','V6T1Z4');
-INSERT INTO Bike VALUES ('B003','Norco',DATE '2025-01-03',DATE '2025-01-12','Repair','456 Oak St','V6T1Z5');
-INSERT INTO Bike VALUES ('B004','Cube',DATE '2025-01-04',DATE '2025-01-13','Active','456 Oak St','V6T1Z5');
-INSERT INTO Bike VALUES ('B005','Special',DATE '2025-01-05',DATE '2025-01-14','Active','789 Pine St','V6T1Z6');
+INSERT INTO Bike VALUES ('B001','Trek',DATE '2025-01-01',DATE '2025-01-10','Available','123 Main St','V6T1Z4');
+INSERT INTO Bike VALUES ('B002','Giant',DATE '2025-01-02',DATE '2025-01-11','Maintenance','123 Main St','V6T1Z4');
+INSERT INTO Bike VALUES ('B003','Norco',DATE '2025-01-03',DATE '2025-01-12','Available','456 Oak St','V6T1Z5');
+INSERT INTO Bike VALUES ('B004','Cube',DATE '2025-01-04',DATE '2025-01-13','Out of Service','456 Oak St','V6T1Z5');
+INSERT INTO Bike VALUES ('B005','Special',DATE '2025-01-05',DATE '2025-01-14','In Use','789 Pine St','V6T1Z6');
 
 
 -- Bike (EBike)
-INSERT INTO Bike VALUES ('B006','Trek',DATE '2025-01-06',DATE '2025-01-15','Active','321 Cedar St','V6T1Z7');
-INSERT INTO Bike VALUES ('B007','Giant',DATE '2025-01-07',DATE '2025-01-16','Active','321 Cedar St','V6T1Z7');
-INSERT INTO Bike VALUES ('B008','Norco',DATE '2025-01-08',DATE '2025-01-17','Repair','654 Maple St','V6T1Z8');
-INSERT INTO Bike VALUES ('B009','Cube',DATE '2025-01-09',DATE '2025-01-18','Active','654 Maple St','V6T1Z8');
-INSERT INTO Bike VALUES ('B010','Special',DATE '2025-01-10',DATE '2025-01-19','Active','789 Pine St','V6T1Z6');
+INSERT INTO Bike VALUES ('B006','Trek',DATE '2025-01-06',DATE '2025-01-15','Maintenance','321 Cedar St','V6T1Z7');
+INSERT INTO Bike VALUES ('B007','Giant',DATE '2025-01-07',DATE '2025-01-16','In Use','321 Cedar St','V6T1Z7');
+INSERT INTO Bike VALUES ('B008','Norco',DATE '2025-01-08',DATE '2025-01-17','Available','654 Maple St','V6T1Z8');
+INSERT INTO Bike VALUES ('B009','Cube',DATE '2025-01-09',DATE '2025-01-18','In Use','654 Maple St','V6T1Z8');
+INSERT INTO Bike VALUES ('B010','Special',DATE '2025-01-10',DATE '2025-01-19','Out of Service','789 Pine St','V6T1Z6');
 
 
 -- RegularBike
