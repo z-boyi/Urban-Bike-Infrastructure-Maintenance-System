@@ -464,7 +464,9 @@ async function insertMaintenanceTask(event) {
 }
 
 // Get tasks by technician id
-async function getTasksByTechnicianID() {
+async function getTasksByTechnicianID(event) {
+    event.preventDefault();
+    
     const TechnicianID = document.getElementById('queryTechnicianID').value;
 
     const response = await fetch(`/technician/tasks?TechnicianID=${TechnicianID}`, {
@@ -472,12 +474,13 @@ async function getTasksByTechnicianID() {
     });
 
     const responseData = await response.json();
+
     const messageElement = document.getElementById('queryResultMsg');
 
     if (responseData.success) {
         messageElement.textContent = "Here are the tasks assigned to this technician";
         
-        const tableElement = document.getElementById('maintenanceTask');
+        const tableElement = document.getElementById('queryTable');
         const tableHead = tableElement.querySelector('thead');
         const tableBody = tableElement.querySelector('tbody');
 
@@ -513,7 +516,7 @@ async function getTechnicianAboveAverageWorkload() {
     const responseData = await response.json();
 
     const messageElement = document.getElementById('aboveAvgWorkloadMsg');
-    const tableElement = document.getElementById('MaintenanceTask');
+    const tableElement = document.getElementById('aboveAvgWorkloadTable');
 
     const tableHead = tableElement.querySelector('thead');
     const tableBody = tableElement.querySelector('tbody');
@@ -553,7 +556,7 @@ async function getTechnicianWorkOnAllTasks() {
     const responseData = await response.json();
     const messageElement = document.getElementById('workOnAllMsg');
 
-    const tableElement = document.getElementById('MaintenanceTask');
+    const tableElement = document.getElementById('workOnAllTable');
     const tableHead = tableElement.querySelector('thead');
     const tableBody = tableElement.querySelector('tbody');
 

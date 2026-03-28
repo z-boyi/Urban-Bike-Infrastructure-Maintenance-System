@@ -195,11 +195,12 @@ router.post('/maintenance-task/insert', async (req, res) => {
 
 router.get('/technician/tasks', async(req, res) => {
     const { TechnicianID } = req.query;
-    const queryResult = await appService.getTasksByTechnicianID( TechnicianID);
+    const queryResult = await appService.getTasksByTechnicianID(TechnicianID);
     if (queryResult.success) {
         res.json({ 
             success: true,
             data: queryResult.data,
+            columns: queryResult.columns,
             message: queryResult.message
         });
     } else {

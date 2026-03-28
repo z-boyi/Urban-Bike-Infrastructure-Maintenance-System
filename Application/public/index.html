@@ -23,6 +23,8 @@
     </h1>
 
     <br><hr><br> <!-- ========================================================================= -->
+   
+   
     <!-- Insert New Station -->
     <h2>Insert New Station</h2>
 
@@ -45,6 +47,8 @@
     <div id="insertStationMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
+   
+   
     <!-- Show Station -->
     <h2>Show Stations</h2>
     <button id="showStationsBtn">Show Stations</button>
@@ -58,6 +62,7 @@
     
     <br><hr><br> <!-- ========================================================================= -->
 
+   
     <!-- Insert New Bike -->
     <h2>Insert New Bike</h2>
     <form id="insertBikeForm">
@@ -83,6 +88,8 @@
     <div id="insertBikeMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
+   
+   
     <!-- Show Bikes -->
     <h2>Show Bikes</h2>
     <button id="showBikesBtn">Show Bikes</button>
@@ -96,6 +103,7 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
+    
     <!-- Update bike status -->
     <h2>Update Bike Status</h2>
     <form id="updateBikeForm">
@@ -250,10 +258,28 @@
     <!-- Insert a given maintenance task -->
     <h2> Insert A New Task</h2>
     <form id="insertMaintenanceTask">
-        TaskID: <input type="text" id="insertTaskID" placeholder="Enter TaskID (e.g. T001)" required> <br><br>
-        MaintenanceID: <input type="text" id="insertMaintenanceID" placeholder="Enter MaintenanceID (e.g. M001)" maxlength="4" required> <br><br>
-        TechnicianID: <input type="text" id="insertTechnicianID" placeholder="Enter TechnicianID (e.g. T001)" maxlength="4" required> <br><br>
-
+        Task ID: 
+        <input type="text" id="insertMaintenanceID" placeholder="e.g. T001" required><br><br>
+       
+        Maintenance Type:
+            <select id="insertMaintenanceID" required>
+                <option value="">Select Maintenance Type</option>
+                <option value="M001">Battery Check</option>
+                <option value="M002">Brake Fix</option>
+                <option value="M003">Tire Replacement</option>
+                <option value="M004">Cleaning</option>
+                <option value="M005">Others</option>
+            </select>
+        
+        Technician: 
+            <select id="insertTechnicianID" required>
+                <option value="">Select Technician</option>
+                <option value="S001">Tom (S001)</option>
+                <option value="S002">Jerry (S002)</option>
+                <option value="S003">Mark (S003)</option>
+                <option value="S004">Luke (S004)</option>
+                <option value="S005">John (S005)</option>
+            </select>
         <button type="submit"> insert </button> <br>
     </form>
     <div id="insertResultMsg"></div>
@@ -263,13 +289,25 @@
 
     <!-- Get tasks by technician ID -->
     <h2>Get Tasks By Technician ID</h2>
-    <p>Please enter a technician ID</p>
+    <p>Please select a technician</p>
     <form id="getTasksByTechnicianID">
-        TechnicianID: <input type="text" id="queryTechnicianID" placeholder="Enter TechnicianID (e.g. T001)" maxlength="4" required> <br><br>
-
-        <button type="submit"> insert </button> <br>
+        TechnicianID: 
+            <select id="queryTechnicianID" required>
+                <option value="">Select Technician</option>
+                <option value="S001">Tom (S001)</option>
+                <option value="S002">Jerry (S002)</option>
+                <option value="S003">Mark (S003)</option>
+                <option value="S004">Luke (S004)</option>
+                <option value="S005">John (S005)</option>
+            </select>
+        <button type="submit"> submit </button> <br>
     </form>
     <div id="queryResultMsg"></div>
+    
+    <table id="queryTable" border="1">
+        <thead></thead>
+        <tbody></tbody>
+    </table>
 
     <br><hr><br> <!-- ========================================================================= -->
 
@@ -280,6 +318,11 @@
     <!-- A placeholder to display messages related to the update operation. -->
     <div id="aboveAvgWorkloadMsg"></div>
 
+    <table id="aboveAvgWorkloadTable" border="1">
+        <thead></thead>
+        <tbody></tbody>
+    </table>
+
     <br><hr><br> <!-- ========================================================================= -->
 
 
@@ -289,7 +332,13 @@
     <!-- A placeholder to display the count result. -->
     <div id="workOnAllMsg"></div>
 
+    <table id="workOnAllTable" border="1">
+        <thead></thead>
+        <tbody></tbody>
+    </table>
+
     <br><hr><br> <!-- ========================================================================= -->
+
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->

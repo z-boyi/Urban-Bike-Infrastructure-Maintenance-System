@@ -526,7 +526,6 @@ async function insertMaintenanceTask(TaskID, MaintenanceID, TechnicianID) {
 // JOIN Query: Find tasks by Technician
 async function getTasksByTechnicianID(TechnicianID) {
     return await withOracleDB(async (connection) => {
-
         // Check if the TechnicianID exists
         const checkExistence = await connection.execute(
             `
@@ -543,7 +542,7 @@ async function getTasksByTechnicianID(TechnicianID) {
         // Find tasks with information associate with this technician
         const result = await connection.execute(
             `
-            SELECT T.StaffID, S.Name, MT.TaskID, M.MaintenanceID, M.PriorityLevel, M.CompletionStatus, M.RepairQuotation
+            SELECT T.StaffID, S.Name, MT.TaskID, M.MaintenanceID
             FROM Technician T
             JOIN Staff S
                 ON T.StaffID = S.StaffID
@@ -559,7 +558,7 @@ async function getTasksByTechnicianID(TechnicianID) {
             return { success: true, data: [], message: "Technician exists but has no tasks."}
         }
         
-        return {success: true, data: result.rows};
+        return {success: true, data: result.rows, columns: result.metaData.map(col => col.name)};
 
     }).catch(() => {
         return { success: false, message: "Query failed" };
