@@ -586,6 +586,26 @@ async function getTechnicianWorkOnAllTasks() {
     }
 }
 
+// fetch technician
+async function fetchTechnician() {
+    const tableElement = document.getElementById('Technician');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/technician/fetch');
+    const responseData = await response.json();
+
+    tableBody.innerHTML = '';
+
+    responseData.data.forEach(rowData => {
+        const row = tableBody.insertRow();
+
+        rowData.forEach(field => {
+            const cell = row.insertCell();
+            cell.textContent = field;
+        });
+    });
+}
+
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -606,6 +626,7 @@ window.onload = function() {
     document.getElementById("projectionForm").addEventListener("submit", runProjection);
 
     fetchMaintenanceTask();
+    fetchTechnician();
     document.getElementById("insertMaintenanceTask").addEventListener("submit", insertMaintenanceTask);
     document.getElementById("getTasksByTechnicianID").addEventListener("submit", getTasksByTechnicianID);
     document.getElementById("getTechnicianAboveAverageWorkload").addEventListener("click", getTechnicianAboveAverageWorkload);

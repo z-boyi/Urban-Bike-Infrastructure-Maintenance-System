@@ -276,15 +276,11 @@ INSERT INTO Staff VALUES ('S015','Emma','555','Granville','R1',NULL);
 
 
 -- Staff (Technician)
-INSERT INTO Staff VALUES ('S001','Tom','111','UBC','R2','S011');
-INSERT INTO Staff VALUES ('S002','Jerry','222','UBC','R2','S011');
-INSERT INTO Staff VALUES ('S003','Mark','333','Downtown','R2','S012');
-INSERT INTO Staff VALUES ('S004','Luke','444','CityHall','R2','S013');
-INSERT INTO Staff VALUES ('S005','John','555','Kits','R2','S014');
-
-INSERT INTO Staff VALUES ('S016','Mike','333','Downtown','R2','S012');
-INSERT INTO Staff VALUES ('S017','James','444','CityHall','R2','S013');
-INSERT INTO Staff VALUES ('S018','Jim','555','Kits','R2','S014');
+INSERT INTO Staff VALUES ('S001','Tom','tom@technician.com','UBC','R2','S011');
+INSERT INTO Staff VALUES ('S002','Jerry','jerry@technician.com','UBC','R2','S011');
+INSERT INTO Staff VALUES ('S003','Mark','mark@technician.com','Downtown','R2','S012');
+INSERT INTO Staff VALUES ('S004','Luke','luke@technician.com','CityHall','R2','S013');
+INSERT INTO Staff VALUES ('S005','John','john@technician.com','Kits','R2','S014');
 
 
 -- Staff (Inspector)

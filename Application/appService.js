@@ -641,6 +641,24 @@ async function fetchMaintenanceTask() {
     })
 }
 
+// fetch the technician table
+async function fetchTechnician() {
+    return await withOracleDB(async (connection) => {
+    const result = await connection.execute(
+            `
+            SELECT StaffID, Name, Contact, DBMS_LOB.SUBSTR(AssignedArea, 100, 1) AS AssignedArea
+            FROM Staff
+            WHERE StaffID IN (SELECT StaffID FROM Technician)
+            `
+    )
+
+    return {success: true, data: result.rows, columns: result.metaData.map(col => col.name)};
+
+    }).catch(() => {
+        return { success: false, message: "Query failed." };
+    })
+}
+
 module.exports = {
     fetchBikes,
     testOracleConnection,
@@ -658,5 +676,6 @@ module.exports = {
     getTasksByTechnicianID,
     getTechnicianAboveAverageWorkload,
     getTechnicianWorkOnAllTasks,
-    fetchMaintenanceTask
+    fetchMaintenanceTask,
+    fetchTechnician
 };
