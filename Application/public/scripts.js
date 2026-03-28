@@ -149,13 +149,49 @@ async function insertBike(event) {
     }
 }
 
+// Fetch bikes and display them
+async function fetchBikes() {
+    const tableElement = document.getElementById('BikeTable');
+    const tableHead = tableElement.querySelector('thead');
+    const tableBody = tableElement.querySelector('tbody');
+    const messageElement = document.getElementById('bikeMsg');
+
+    const response = await fetch('/bike/fetch');
+    const responseData = await response.json();
+
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
+
+    if (responseData.success) {
+        messageElement.textContent = "Showing all bikes.";
+
+        const headerRow = tableHead.insertRow();
+        responseData.columns.forEach(col => {
+            const th = document.createElement('th');
+            th.textContent = col;
+            headerRow.appendChild(th);
+        });
+
+        responseData.data.forEach(rowData => {
+            const row = tableBody.insertRow();
+            rowData.forEach(field => {
+                const cell = row.insertCell();
+                cell.textContent = field;
+            });
+        });
+    } else {
+        messageElement.textContent = responseData.message || "Failed to load bikes.";
+    }
+}
+
 
 // Update bike status by BikeID
 async function updateBikeStatus(event) {
     event.preventDefault();
 
-    const bikeID = document.getElementById("updateBikeID").value;
+    const bikeID = document.getElementById("updateBikeID").value.trim();
     const newStatus = document.getElementById("updateStatus").value;
+    const messageElement = document.getElementById("updateBikeMsg");
 
     const response = await fetch("/bike/update-status", {
         method: "POST",
@@ -166,17 +202,7 @@ async function updateBikeStatus(event) {
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById("updateBikeMsg");
-
-    if (responseData.success) {
-        if (responseData.rowsAffected > 0) {
-            messageElement.textContent = "Bike status updated successfully!";
-        } else {
-            messageElement.textContent = "No bike found with that BikeID.";
-        }
-    } else {
-        messageElement.textContent = responseData.message || "Error updating bike status!";
-    }
+    messageElement.textContent = responseData.message || "Request completed.";
 }
 
 // Search bikes by Status Brand and Postal Code
@@ -567,6 +593,7 @@ window.onload = function() {
     document.getElementById("insertStationForm").addEventListener("submit", insertStation);
     document.getElementById("showStationsBtn").addEventListener("click", fetchStations);
     document.getElementById("insertBikeForm").addEventListener("submit", insertBike);
+    document.getElementById("showBikesBtn").addEventListener("click", fetchBikes);
     document.getElementById("updateBikeForm").addEventListener("submit", updateBikeStatus);
     document.getElementById("searchBikeForm").addEventListener("submit", searchBikes);
     document.getElementById("countBikesBtn").addEventListener("click", countBikesPerStation);

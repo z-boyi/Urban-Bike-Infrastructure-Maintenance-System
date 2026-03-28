@@ -83,12 +83,31 @@
     <div id="insertBikeMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
+    <!-- Show Bikes -->
+    <h2>Show Bikes</h2>
+    <button id="showBikesBtn">Show Bikes</button>
+    <div id="bikeMsg"></div>
+    <br>
+
+    <table id="BikeTable" border="1">
+        <thead></thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
 
     <!-- Update bike status -->
     <h2>Update Bike Status</h2>
     <form id="updateBikeForm">
         Bike ID: <input type="text" id="updateBikeID" required> <br><br>
-        New Status: <input type="text" id="updateStatus" required> <br><br>
+        New Status: 
+        <select id="updateStatus" required>
+            <option value="">Select Status</option>
+            <option value="Available">Available</option>
+            <option value="In Use">In Use</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Out of Service">Out of Service</option>
+        </select> <br><br>
         <button type="submit">Update</button>
     </form>
     <div id="updateBikeMsg"></div>

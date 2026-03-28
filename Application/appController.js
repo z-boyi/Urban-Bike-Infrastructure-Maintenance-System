@@ -76,24 +76,39 @@ router.post('/bike/insert', async (req, res) => {
     }
 });
 
-router.post("/bike/update-status", async (req, res) => {
-    const { bikeID, newStatus } = req.body;
-    const result = await appService.updateBikeStatus(bikeID, newStatus);
-    if (result.success && result.rowsAffected > 0) {
+router.get('/bike/fetch', async (req, res) => {
+    const queryResult = await appService.fetchBikes();
+
+    if (queryResult.success) {
         res.json({
             success: true,
-            message: "Bike status updated successfully."
-        });
-    } else if (result.success && result.rowsAffected === 0) {
-        res.json({
-            success: false,
-            message: "No bike found with that BikeID."
+            data: queryResult.data,
+            columns: queryResult.columns
         });
     } else {
         res.status(500).json({
             success: false,
-            message: result.error,
-            details: result.details
+            message: queryResult.message
+        });
+    }
+});
+
+router.post("/bike/update-status", async (req, res) => {
+    const { bikeID, newStatus } = req.body;
+    const result = await appService.updateBikeStatus(bikeID, newStatus);
+
+    if (result.success) {
+        res.json({
+            success: true,
+            message: result.message,
+            rowsAffected: result.rowsAffected
+        });
+    } else {
+        res.json({
+            success: false,
+            message: result.message,
+            errorType: result.errorType || null,
+            details: result.details || null
         });
     }
 });

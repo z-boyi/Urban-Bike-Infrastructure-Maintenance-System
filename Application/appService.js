@@ -240,29 +240,100 @@ async function insertBike(BikeID, Brand, LastServiceDate, DeploymentDate, Status
     });
 }
 
-
-// UPDATE QUERY: Update a bike's status by BikeID 
-async function updateBikeStatus(bikeID, newStatus) {
+// fetch the Bike table
+async function fetchBikes() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `
-            UPDATE Bike 
-            SET Status = :newStatus 
-            WHERE BikeID = :bikeID
+            SELECT BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode
+            FROM Bike
+            ORDER BY BikeID
+            `
+        );
+
+        return {
+            success: true,
+            data: result.rows,
+            columns: result.metaData.map(col => col.name)
+        };
+    }).catch((error) => {
+        console.error("FETCH BIKES ERROR");
+        console.error("Message:", error.message);
+
+        return {
+            success: false,
+            message: "Failed to fetch bikes."
+        };
+    });
+}
+
+
+async function updateBikeStatus(bikeID, newStatus) {
+    return await withOracleDB(async (connection) => {
+        // Step 1: check whether bike exists
+        const checkResult = await connection.execute(
+            `
+            SELECT Status
+            FROM Bike
+            WHERE TRIM(UPPER(BikeID)) = TRIM(UPPER(:bikeID))
+            `,
+            { bikeID }
+        );
+
+        if (checkResult.rows.length === 0) {
+            return {
+                success: false,
+                errorType: "NOT_FOUND",
+                message: "No bike found with that BikeID."
+            };
+        }
+
+        const currentStatus = checkResult.rows[0][0];
+
+        // Step 2: optional check if status is unchanged
+        if (currentStatus === newStatus) {
+            return {
+                success: false,
+                errorType: "NO_CHANGE",
+                message: "Bike already has this status."
+            };
+        }
+
+        // Step 3: update
+        const result = await connection.execute(
+            `
+            UPDATE Bike
+            SET Status = :newStatus
+            WHERE TRIM(UPPER(BikeID)) = TRIM(UPPER(:bikeID))
             `,
             { newStatus, bikeID },
             { autoCommit: true }
         );
 
-        return {success: true, rowsAffected: result.rowsAffected};
+        return {
+            success: true,
+            rowsAffected: result.rowsAffected,
+            message: "Bike status updated successfully."
+        };
+
     }).catch((err) => {
         console.error("UPDATE ERROR (Bike Status)");
         console.error("BikeID:", bikeID, "| NewStatus:", newStatus);
         console.error("Message:", err.message);
 
+        if (err.errorNum === 2290) {
+            return {
+                success: false,
+                errorType: "INVALID_STATUS",
+                message: "This status is not allowed by the database.",
+                details: err.message
+            };
+        }
+
         return {
             success: false,
-            error: "Failed to update bike status",
+            errorType: "DB_ERROR",
+            message: "Failed to update bike status.",
             details: err.message
         };
     });
@@ -577,6 +648,7 @@ module.exports = {
     insertStation,
     fetchStations,
     insertBike,
+    fetchBikes,
     updateBikeStatus,
     searchBikes,
     countBikesPerStation,
