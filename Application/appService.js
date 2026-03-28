@@ -394,7 +394,9 @@ async function countBikesPerStation() {
             `
         );
 
-        return result.rows;
+        
+        return { success: true, data: result.rows};
+        
     }).catch((err) => {
         console.error("GROUP BY ERROR (Bikes Per Station)");
         console.error("Query: COUNT bikes grouped by station");

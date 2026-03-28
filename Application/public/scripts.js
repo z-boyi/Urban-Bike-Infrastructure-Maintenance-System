@@ -252,7 +252,7 @@ async function searchBikes(event) {
 
 // Count bikes per station
 async function countBikesPerStation() {
-    const response = await fetch("/bike/group-by-station", {
+    const response = await fetch("/bike/count-per-station", {
         method: "GET"
     });
 
