@@ -220,6 +220,40 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
+    <!-- Insert a given issue record -->
+    <h2> Insert An Issue Record</h2>
+    <form id="insertIssue">
+        IssueID: 
+        <input type="text" id="insertIssueID" placeholder="e.g. I001" required><br><br>
+        
+        Description:
+            <select id="insertDescription" required>
+                <option value="">Select Issue Type</option>
+                <option value="Minor scratch">Minor scratch</option>
+                <option value="Loose brake">Loose brake</option>
+                <option value="Flat tire">Flat tire</option>
+                <option value="Broken chain">Broken chain</option>
+                <option value="Frame damage">Frame damage</option>
+            </select><br><br>
+        
+        BikeID: 
+        <input type="text" id="insertBikeID" placeholder="e.g. B001" required><br><br>
+        
+        Insepector: 
+            <select id="insertInspectorID" required>
+                <option value="">Select Inspector</option>
+                <option value="S006">Anna(S006)</option>
+                <option value="S007">Bella (S007)</option>
+                <option value="S008">Cindy (S008)</option>
+                <option value="S009">Diana (S009)</option>
+                <option value="S010">Eva (S010)</option>
+            </select>
+        <button type="submit"> insert </button> <br>
+    </form>
+    <div id="insertIssueMsg"></div>
+ 
+     <br><hr><br> <!-- ========================================================================= -->
+
 
     <!-- Delete issue record -->
     <h2>Delete Issue Record</h2>

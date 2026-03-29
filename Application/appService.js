@@ -585,6 +585,7 @@ async function fetchIssue() {
                 BikeID, 
                 InspectorID
             FROM IssueRecord
+            ORDER BY IssueID
             `
     )
 
@@ -595,6 +596,75 @@ async function fetchIssue() {
     })
 }
 
+// insert issue
+async function insertIssue(IssueID, BikeID, Description, InspectorID) {
+    return await withOracleDB(async (connection) => {
+        const bikeCheck = await connection.execute(
+            `SELECT 1 FROM Bike WHERE BikeID = :BikeID`,
+            { BikeID }
+        );
+        if (bikeCheck.rows.length === 0) {
+            return { success: false, message: "BikeID does not exist." };
+        }
+
+        const ruleResult = await connection.execute(
+            `SELECT ConditionScore 
+             FROM IssueRule 
+             WHERE Description = :Description`,
+            { Description }
+        );
+
+        if (ruleResult.rows.length === 0) {
+            return {
+                success: false,
+                message: "Invalid issue type (Description not found)."
+            };
+        }
+
+        const ConditionScore = ruleResult.rows[0][0];
+
+        const inspectorCheck = await connection.execute(
+            `SELECT 1 FROM Inspector WHERE StaffID = :InspectorID`,
+            { InspectorID }
+        );
+        if (inspectorCheck.rows.length === 0) {
+            return { success: false, message: "InspectorID does not exist." };
+        }
+
+        const result = await connection.execute(
+            `
+            INSERT INTO IssueRecord 
+            (IssueID, ReportTime, ConditionScore, Description, BikeID, InspectorID)
+            VALUES 
+            (:IssueID, CURRENT_TIMESTAMP, :ConditionScore, :Description, :BikeID, :InspectorID)
+            `,
+            { IssueID, ConditionScore, Description, BikeID, InspectorID },
+            { autoCommit: true }
+        );
+
+        return {
+            success: result.rowsAffected > 0,
+            message: "Issue inserted successfully."
+        };
+
+    }).catch((err) => {
+
+        console.error("Insert Issue Error:", err.message);
+
+        if (err.errorNum === 1) {
+            return { success: false, message: "IssueID already exists." };
+        }
+
+        if (err.errorNum === 2291) {
+            return { 
+                success: false, 
+                message: "Foreign key violation (BikeID or InspectorID invalid)." 
+            };
+        }
+
+        return { success: false, message: "Insert failed." };
+    });
+}
 
 // ==================== Maintenance Queries ====================
 
@@ -796,6 +866,7 @@ module.exports = {
     getSelectedIssueAttributes,
     getBikesWithManyIssues,
     fetchIssue,
+    insertIssue,
 
     insertMaintenanceTask,
     getTasksByTechnicianID,

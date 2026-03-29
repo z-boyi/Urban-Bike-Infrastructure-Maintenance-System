@@ -354,6 +354,7 @@ async function deleteIssue(event) {
 
     if (responseData.success) {
         messageElement.textContent = "Issue deleted successfully!";
+        fetchIssue();
     } else {
         messageElement.textContent = "Error deleting issue!";
     }
@@ -480,6 +481,38 @@ async function fetchIssue() {
     });
 }
 
+// Insert a given issue record
+async function insertIssue(event) {
+    event.preventDefault();
+
+    const IssueID = document.getElementById('insertIssueID').value;
+    const Description = document.getElementById('insertDescription').value;
+    const BikeID = document.getElementById('insertBikeID').value;
+    const InspectorID = document.getElementById('insertInspectorID').value;
+
+    const response = await fetch('/issue/insert', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            IssueID: IssueID,
+            Description: Description,
+            BikeID: BikeID,
+            InspectorID: InspectorID
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('insertIssueMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "Data inserted successfully!";
+        fetchIssue();
+    } else {
+        messageElement.textContent = responseData.message || "Insert failed.";
+    }
+}
 
 // ==================== Task/Technician-related Frontend Functions ====================
 // Fetches data from MaintenanceTask and displays it.
@@ -721,6 +754,7 @@ window.onload = function() {
     document.getElementById("BidWIssues").addEventListener("click", BidWIssues);
     document.getElementById("deleteIssueForm").addEventListener("submit", deleteIssue);
     document.getElementById("projectionForm").addEventListener("submit", runProjection);
+    document.getElementById('insertIssue').addEventListener("submit", insertIssue);
 
     fetchMaintenanceTask();
     fetchTechnician();

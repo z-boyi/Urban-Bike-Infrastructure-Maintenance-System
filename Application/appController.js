@@ -231,6 +231,12 @@ router.get('/issue/fetch', async(req, res) => {
     }
 })
 
+router.post('/issue/insert', async (req, res) => {
+    const { IssueID, BikeID, Description, InspectorID } = req.body;
+    const insertResult = await appService.insertIssue(IssueID, BikeID, Description, InspectorID);
+    res.json(insertResult);
+});
+
 router.post('/maintenance-task/insert', async (req, res) => {
     const { TaskID, MaintenanceID, TechnicianID } = req.body;
     const insertResult = await appService.insertMaintenanceTask(TaskID, MaintenanceID, TechnicianID);
