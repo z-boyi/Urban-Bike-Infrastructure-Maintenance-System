@@ -1,7 +1,7 @@
 // Note that this file serves as a draft for individual work, containing the endpoints for maintenance related queries
 
 const express = require('express');
-const appService = require('../appService');
+const appService = require('../../appService');
 
 const router = express.Router();
 
