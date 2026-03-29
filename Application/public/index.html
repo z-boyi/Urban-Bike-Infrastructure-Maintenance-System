@@ -24,7 +24,23 @@
 
     <br><hr><br> <!-- ========================================================================= -->
    
-   
+
+    <!-- ==================== Bike Management ==================== -->
+    <h1>Bike Management</h1>
+    <br>
+
+    <!-- Show Station -->
+    <h2>Show Stations</h2>
+    <button id="showStationsBtn">Show Stations</button>
+    <div id="stationMsg"></div>
+    <br>
+    
+    <table id="StationTable" border="1">
+        <thead></thead>
+        <tbody></tbody>
+    </table>
+
+
     <!-- Insert New Station -->
     <h2>Insert New Station</h2>
 
@@ -45,24 +61,8 @@
     </form>
     
     <div id="insertStationMsg"></div>
-
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
    
-   
-    <!-- Show Station -->
-    <h2>Show Stations</h2>
-    <button id="showStationsBtn">Show Stations</button>
-    <div id="stationMsg"></div>
-    <br>
-    
-    <table id="StationTable" border="1">
-        <thead></thead>
-        <tbody></tbody>
-    </table>
-
-
-    <br><hr><br> <!-- ========================================================================= -->
-
     <!-- Delete Station -->
     <h2>Delete Station</h2>
 
@@ -77,8 +77,20 @@
     </form>
     
     <div id="deleteStationMsg"></div>
-    
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
+
+
+    <!-- Show Bikes -->
+    <h2>Show Bikes</h2>
+    <button id="showBikesBtn">Show Bikes</button>
+    <div id="bikeMsg"></div>
+    <br>
+
+    <table id="BikeTable" border="1">
+        <thead></thead>
+        <tbody></tbody>
+    </table>
+    <br><br>
 
    
     <!-- Insert New Bike -->
@@ -104,24 +116,9 @@
     </form>
     
     <div id="insertBikeMsg"></div>
-
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
    
    
-    <!-- Show Bikes -->
-    <h2>Show Bikes</h2>
-    <button id="showBikesBtn">Show Bikes</button>
-    <div id="bikeMsg"></div>
-    <br>
-
-    <table id="BikeTable" border="1">
-        <thead></thead>
-        <tbody></tbody>
-    </table>
-
-    <br><hr><br> <!-- ========================================================================= -->
-
-    
     <!-- Update bike status -->
     <h2>Update Bike Status</h2>
     <form id="updateBikeForm">
@@ -137,8 +134,8 @@
         <button type="submit">Update</button>
     </form>
     <div id="updateBikeMsg"></div>
-    
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
+
 
     <!-- Delete bikes -->
     <h2>Delete Bike</h2>
@@ -152,8 +149,8 @@
     </form>
     
     <div id="deleteBikeMsg"></div>
+    <br><br>
 
-    <br><hr><br> <!-- ========================================================================= -->
 
     <!-- Search bikes -->
     <h2>Search Bikes</h2>
@@ -178,8 +175,7 @@
         </thead>
         <tbody></tbody>
     </table>
-
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
 
 
     <!-- Count bikes per station -->
@@ -196,12 +192,16 @@
         </thead>
         <tbody></tbody>
     </table>
+    <br><br>
 
-    <br><hr><br> <!-- ========================================================================= -->
+
+     <!-- ==================== Issue Management ==================== -->
+    <hr>
+    <h1>Issue Management</h1>
+    <br>
 
     
-    <!-- Show Issue
-    Data will be fetched and inserted here dynamically using JavaScript. -->
+    <!-- Show Issue -->
     <h2>Show Issue Record</h2>
     <table id="Issue" border="1">
         <thead>
@@ -217,8 +217,8 @@
         <tbody>
         </tbody>
     </table>
+    <br><br>
 
-    <br><hr><br> <!-- ========================================================================= -->
 
     <!-- Insert a given issue record -->
     <h2> Insert An Issue Record</h2>
@@ -251,8 +251,7 @@
         <button type="submit"> insert </button> <br>
     </form>
     <div id="insertIssueMsg"></div>
- 
-     <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
 
 
     <!-- Delete issue record -->
@@ -267,8 +266,7 @@
     </form>
     
     <div id="deleteIssueMsg"></div>
-    
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
     
 
     <!-- Issue project -->
@@ -297,8 +295,7 @@
         </thead>
         <tbody></tbody>
     </table>
-
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
 
 
     <!-- Find BikeID with many issues-->
@@ -315,13 +312,16 @@
         </thead>
         <tbody></tbody>
     </table>
+    <br><br>
+    
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <!-- ==================== Maintenance Task & Technician Management ==================== -->
+    <hr>
+    <h1>Maintenance Task & Technician Management</h1>
+    <br>
 
 
-
-    <!-- Show maintenance tasks
-        Data will be fetched and inserted here dynamically using JavaScript. -->
+    <!-- Show maintenance tasks -->
     <h2>Show Maintenance Tasks</h2>
     <table id="MaintenanceTask" border="1">
         <thead>
@@ -338,17 +338,14 @@
         <tbody>
         </tbody>
     </table>
+    <br><br>
 
-    <br><hr><br> <!-- ========================================================================= -->
 
-
-    <!-- Show Technician
-    Data will be fetched and inserted here dynamically using JavaScript. -->
+    <!-- Show Technician -->
     <h2>Show Technician</h2>
     <table id="Technician" border="1">
         <thead>
             <tr>
-                <!--Table head, need to be adjusted accordingly to align with your own.-->
                 <th>StaffID</th>
                 <th>Name</th>
                 <th>Contact</th>
@@ -358,8 +355,7 @@
         <tbody>
         </tbody>
     </table>
-
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
 
 
     <!-- Insert a given maintenance task -->
@@ -390,8 +386,8 @@
         <button type="submit"> insert </button> <br>
     </form>
     <div id="insertResultMsg"></div>
+    <br><br>
 
-    <br><hr><br> <!-- ========================================================================= -->
 
     <!-- Delete a maintenance task-->
     <h2>Delete A Task</h2>
@@ -404,8 +400,7 @@
     </form>
     
     <div id="deleteTaskMsg"></div>
-    
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
     
 
     <!-- Get tasks by technician ID -->
@@ -429,22 +424,19 @@
         <thead></thead>
         <tbody></tbody>
     </table>
-
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
 
 
     <!-- Get technicians above average workload-->
     <h2>Get Technicians Above Average Workload</h2>
     <button id="getTechnicianAboveAverageWorkload"> Extract </button> <br><br>
-    <!-- A placeholder to display messages related to the update operation. -->
     <div id="aboveAvgWorkloadMsg"></div>
 
     <table id="aboveAvgWorkloadTable" border="1">
         <thead></thead>
         <tbody></tbody>
     </table>
-
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
 
 
     <!-- Get technicians work on all tasks-->
@@ -458,7 +450,7 @@
         <tbody></tbody>
     </table>
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <br><br>
 
 
     <!-- ===================================================================================== -->
