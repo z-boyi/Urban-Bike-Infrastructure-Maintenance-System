@@ -111,6 +111,24 @@ router.get('/bike/fetch', async (req, res) => {
     }
 });
 
+router.post('/bike/delete', async (req, res) => {
+    const { BikeID } = req.body;
+
+    const result = await appService.deleteBike(BikeID);
+
+    if (result.success) {
+        res.json({
+            success: true,
+            message: "Bike deleted successfully."
+        });
+    } else {
+        res.json({
+            success: false,
+            message: result.message
+        });
+    }
+});
+
 router.post("/bike/update-status", async (req, res) => {
     const { bikeID, newStatus } = req.body;
     const result = await appService.updateBikeStatus(bikeID, newStatus);

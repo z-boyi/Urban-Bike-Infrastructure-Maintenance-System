@@ -209,6 +209,30 @@ async function fetchBikes() {
     }
 }
 
+// Delete bike
+async function deleteBike(event) {
+    event.preventDefault();
+
+    const BikeID = document.getElementById("deleteBikeID").value;
+    const messageElement = document.getElementById("deleteBikeMsg");
+
+    const response = await fetch("/bike/delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ BikeID })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        messageElement.textContent = "Bike deleted successfully!";
+    } else {
+        messageElement.textContent = data.message;
+    }
+}
+
 
 // Update bike status by BikeID
 async function updateBikeStatus(event) {
@@ -688,6 +712,7 @@ window.onload = function() {
     document.getElementById("deleteStationForm").addEventListener("submit", deleteStation);
     document.getElementById("insertBikeForm").addEventListener("submit", insertBike);
     document.getElementById("showBikesBtn").addEventListener("click", fetchBikes);
+    document.getElementById("deleteBikeForm").addEventListener("submit", deleteBike);
     document.getElementById("updateBikeForm").addEventListener("submit", updateBikeStatus);
     document.getElementById("searchBikeForm").addEventListener("submit", searchBikes);
     document.getElementById("countBikesBtn").addEventListener("click", countBikesPerStation);

@@ -304,6 +304,40 @@ async function fetchBikes() {
     });
 }
 
+// Delete Bike
+async function deleteBike(BikeID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `
+            DELETE FROM Bike
+            WHERE BikeID = :BikeID
+            `,
+            { BikeID },
+            { autoCommit: true }
+        );
+
+        if (result.rowsAffected > 0) {
+            return { success: true };
+        } else {
+            return { success: false, message: "Bike not found." };
+        }
+    }).catch((err) => {
+        console.error("DELETE BIKE ERROR:", err);
+
+        if (err.errorNum === 2292) {
+            return {
+                success: false,
+                message: "Cannot delete bike because related records exist."
+            };
+        }
+
+        return {
+            success: false,
+            message: "Delete bike failed."
+        };
+    });
+}
+
 
 async function updateBikeStatus(bikeID, newStatus) {
     return await withOracleDB(async (connection) => {
@@ -753,6 +787,7 @@ module.exports = {
     deleteStation,
     insertBike,
     fetchBikes,
+    deleteBike,
     updateBikeStatus,
     searchBikes,
     countBikesPerStation,
