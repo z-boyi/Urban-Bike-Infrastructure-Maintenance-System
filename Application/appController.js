@@ -179,6 +179,22 @@ router.get("/issue/bike-many-issues", async (req, res) => {
     }
 });
 
+router.get('/issue/fetch', async(req, res) => {
+    const queryResult = await appService.fetchIssue();
+    if (queryResult.success) {
+        res.json({
+            success: true,
+            data: queryResult.data,
+            columns: queryResult.columns
+        });
+    } else {
+        res.json({
+            success: false,
+            message: queryResult.message
+        });
+    }
+})
+
 router.post('/maintenance-task/insert', async (req, res) => {
     const { TaskID, MaintenanceID, TechnicianID } = req.body;
     const insertResult = await appService.insertMaintenanceTask(TaskID, MaintenanceID, TechnicianID);

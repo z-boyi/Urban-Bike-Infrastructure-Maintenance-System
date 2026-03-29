@@ -396,7 +396,7 @@ async function countBikesPerStation() {
 
         
         return { success: true, data: result.rows};
-        
+
     }).catch((err) => {
         console.error("GROUP BY ERROR (Bikes Per Station)");
         console.error("Query: COUNT bikes grouped by station");
@@ -500,6 +500,30 @@ async function getBikesWithManyIssues() {
         return [];
     });
 }
+
+// additional queries for issue
+// fetch issue table
+async function fetchIssue() {
+    return await withOracleDB(async (connection) => {
+    const result = await connection.execute(
+            `
+            SELECT 
+                IssueID, 
+                TO_CHAR(ReportTime, 'YYYY-MM-DD HH24:MI:SS') AS ReportTime, 
+                ConditionScore, 
+                BikeID, 
+                InspectorID
+            FROM IssueRecord
+            `
+    )
+
+    return { success: true, data: result.rows, columns: result.metaData.map(col => col.name) };
+
+    }).catch(() => {
+        return { success: false, message: "Query failed." };
+    })
+}
+
 
 // ==================== Maintenance Queries ====================
 
@@ -694,9 +718,12 @@ module.exports = {
     updateBikeStatus,
     searchBikes,
     countBikesPerStation,
+
     deleteIssueRecord,
     getSelectedIssueAttributes,
     getBikesWithManyIssues,
+    fetchIssue,
+
     insertMaintenanceTask,
     getTasksByTechnicianID,
     getTechnicianAboveAverageWorkload,

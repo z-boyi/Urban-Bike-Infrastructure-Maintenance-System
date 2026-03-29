@@ -411,6 +411,27 @@ async function BidWIssues() {
     }
 }
 
+// fetch issue
+async function fetchIssue() {
+    const tableElement = document.getElementById('Issue');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/issue/fetch');
+    const responseData = await response.json();
+
+    tableBody.innerHTML = '';
+
+    responseData.data.forEach(rowData => {
+        const row = tableBody.insertRow();
+
+        rowData.forEach(field => {
+            const cell = row.insertCell();
+            cell.textContent = field;
+        });
+    });
+}
+
+
 // ==================== Task/Technician-related Frontend Functions ====================
 // Fetches data from MaintenanceTask and displays it.
 async function fetchMaintenanceTask() {
@@ -645,6 +666,7 @@ window.onload = function() {
     document.getElementById("searchBikeForm").addEventListener("submit", searchBikes);
     document.getElementById("countBikesBtn").addEventListener("click", countBikesPerStation);
 
+    fetchIssue();
     document.getElementById("BidWIssues").addEventListener("click", BidWIssues);
     document.getElementById("deleteIssueForm").addEventListener("submit", deleteIssue);
     document.getElementById("projectionForm").addEventListener("submit", runProjection);
