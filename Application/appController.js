@@ -54,6 +54,24 @@ router.get('/station/fetch', async (req, res) => {
     }
 });
 
+router.post('/station/delete', async (req, res) => {
+    const { StreetAddress, PostalCode } = req.body;
+
+    const result = await appService.deleteStation(StreetAddress, PostalCode);
+
+    if (result.success) {
+        res.json({
+            success: true,
+            message: "Station deleted successfully."
+        });
+    } else {
+        res.json({
+            success: false,
+            message: result.message
+        });
+    }
+});
+
 router.post('/bike/insert', async (req, res) => {
     const { BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode } = req.body;
 

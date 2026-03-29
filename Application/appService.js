@@ -146,6 +146,43 @@ async function fetchStations() {
     });
 }
 
+// Delete Station
+async function deleteStation(StreetAddress, PostalCode) {
+    return await withOracleDB(async (connection) => {
+
+        const result = await connection.execute(
+            `
+            DELETE FROM BikeStation
+            WHERE StreetAddress = :StreetAddress
+              AND PostalCode = :PostalCode
+            `,
+            { StreetAddress, PostalCode },
+            { autoCommit: true }
+        );
+
+        if (result.rowsAffected > 0) {
+            return { success: true };
+        } else {
+            return { success: false, message: "Station not found." };
+        }
+
+    }).catch((err) => {
+        console.error("DELETE STATION ERROR:", err);
+
+        if (err.errorNum === 2292) {
+            return {
+                success: false,
+                message: "Cannot delete station because bikes exist at this station."
+            };
+        }
+
+        return {
+            success: false,
+            message: "Delete station failed."
+        };
+    });
+}
+
 // INSERT Query: Insert Bike
 async function insertBike(BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode) {
     return await withOracleDB(async (connection) => {
@@ -713,6 +750,7 @@ module.exports = {
     testOracleConnection,
     insertStation,
     fetchStations,
+    deleteStation,
     insertBike,
     fetchBikes,
     updateBikeStatus,

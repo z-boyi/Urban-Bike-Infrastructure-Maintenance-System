@@ -110,6 +110,31 @@ async function fetchStations() {
     }
 }
 
+// Delete station
+async function deleteStation(event) {
+    event.preventDefault();
+
+    const StreetAddress = document.getElementById("deleteStreet").value;
+    const PostalCode = document.getElementById("deletePostal").value;
+
+    const response = await fetch("/station/delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ StreetAddress, PostalCode })
+    });
+
+    const data = await response.json();
+    const messageElement = document.getElementById("deleteStationMsg");
+
+    if (data.success) {
+        messageElement.textContent = "Station deleted successfully!";
+    } else {
+        messageElement.textContent = data.message;
+    }
+}
+
 // Insert a new bike
 async function insertBike(event) {
     event.preventDefault();
@@ -660,6 +685,7 @@ window.onload = function() {
 
     document.getElementById("insertStationForm").addEventListener("submit", insertStation);
     document.getElementById("showStationsBtn").addEventListener("click", fetchStations);
+    document.getElementById("deleteStationForm").addEventListener("submit", deleteStation);
     document.getElementById("insertBikeForm").addEventListener("submit", insertBike);
     document.getElementById("showBikesBtn").addEventListener("click", fetchBikes);
     document.getElementById("updateBikeForm").addEventListener("submit", updateBikeStatus);
