@@ -262,12 +262,10 @@ async function searchBikes(event) {
     const brand = document.getElementById("searchBrand").value;
     const postalCode = document.getElementById("searchPostalCode").value;
 
-    const response = await fetch("/bike/search", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ status, brand, postalCode })
+    const query = new URLSearchParams({ status, brand, postalCode }).toString();
+
+    const response = await fetch(`/bike/search?${query}`, {
+        method: "GET"
     });
 
     const responseData = await response.json();
@@ -285,13 +283,11 @@ async function searchBikes(event) {
 
         rows.forEach(row => {
             const tr = document.createElement("tr");
-
             row.forEach(value => {
                 const td = document.createElement("td");
                 td.textContent = value;
                 tr.appendChild(td);
             });
-
             tableBody.appendChild(tr);
         });
     } else {

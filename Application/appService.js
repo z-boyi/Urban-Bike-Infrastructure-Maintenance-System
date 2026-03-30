@@ -439,7 +439,12 @@ async function searchBikes(status, brand, postalCode) {
         query += ` ORDER BY BikeID`;
 
         const result = await connection.execute(query, binds);
-        return result.rows;
+
+        return {
+            success: true,
+            data: result.rows,
+            columns: result.metaData.map(col => col.name)
+        };
     }).catch((err) => {
         console.error("SELECTION ERROR (Search Bikes)");
         console.error("Filters:", { status, brand, postalCode });
