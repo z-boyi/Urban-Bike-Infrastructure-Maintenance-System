@@ -785,8 +785,11 @@ async function getTechnicianWorkOnAllTasks() {
             )
         `
     )
+    if (result.rows.length === 0) {
+        return { success: true, data: result.rows, columns: result.metaData.map(col => col.name), message: "No technicians work on all tasks."}
+    }
     
-    return { success: true, data: result.rows, columns: result.metaData.map(col => col.name)};
+    return { success: true, data: result.rows, columns: result.metaData.map(col => col.name), message: "Technician who works on all tasks:"};
 
     }).catch(() => {
         return { success: false, message: "Query failed." };

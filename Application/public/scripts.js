@@ -679,7 +679,7 @@ async function getTechnicianWorkOnAllTasks() {
     tableBody.innerHTML = '';
 
     if (responseData.success) {
-        messageElement.textContent = "Technicians who worked on all tasks";
+        messageElement.textContent = responseData.message;
 
         const headerRow = tableHead.insertRow();
         responseData.columns.forEach(col => {
