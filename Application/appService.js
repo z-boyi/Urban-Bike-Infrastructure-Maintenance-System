@@ -756,8 +756,11 @@ async function getTechnicianAboveAverageWorkload() {
             )
         `
     )
+    if (result.rows.length === 0) {
+        return { success: true, data: result.rows, columns: result.metaData.map(col => col.name), message: "No technicians work above average workload."}
+    }
     
-    return { success: true, data: result.rows, columns: result.metaData.map(col => col.name)};
+    return { success: true, data: result.rows, columns: result.metaData.map(col => col.name), message: "Technicians work above average workload:"};
 
     }).catch(() => {
         return { success: false, message: "Query failed." };

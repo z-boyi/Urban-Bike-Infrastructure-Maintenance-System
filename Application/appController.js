@@ -267,7 +267,8 @@ router.get('/technician/above-average-workload', async(req, res) => {
         res.json({
             success: true,
             data: queryResult.data,
-            columns: queryResult.columns
+            columns: queryResult.columns,
+            message: queryResult.message
         });
     } else {
         res.json({

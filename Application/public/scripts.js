@@ -640,7 +640,7 @@ async function getTechnicianAboveAverageWorkload() {
     tableBody.innerHTML = '';
 
     if (responseData.success) {
-        messageElement.textContent = "Technicians with above-average workload";
+        messageElement.textContent = responseData.message;
 
         const headerRow = tableHead.insertRow();
         responseData.columns.forEach(col => {
