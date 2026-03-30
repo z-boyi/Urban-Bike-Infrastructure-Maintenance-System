@@ -36,6 +36,22 @@ async function checkDbConnection() {
     });
 }
 
+// separate the 3 sections, and allow user to select which section to view
+function showSection(sectionId) {
+
+    const sections = [
+        "bikeSection",
+        "issueSection",
+        "maintenanceSection"
+    ];
+
+    sections.forEach(id => {
+        document.getElementById(id).style.display = "none";
+    });
+
+    document.getElementById(sectionId).style.display = "block";
+}
+
 // ==================== Bike-Related Frontend Functions ====================
 // Insert a new station
 async function insertStation(event) {
@@ -729,12 +745,12 @@ async function deleteMaintenanceTask(event) {
     }
 }
 
-
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     checkDbConnection();
+    showSection("bikeSection");
 
     document.getElementById("insertStationForm").addEventListener("submit", insertStation);
     document.getElementById("showStationsBtn").addEventListener("click", fetchStations);
@@ -759,5 +775,4 @@ window.onload = function() {
     document.getElementById("getTechnicianAboveAverageWorkload").addEventListener("click", getTechnicianAboveAverageWorkload);
     document.getElementById("getTechnicianWorkOnAllTasks").addEventListener("click", getTechnicianWorkOnAllTasks);
     document.getElementById("deleteMaintenanceTask").addEventListener('submit', deleteMaintenanceTask);
-
 };

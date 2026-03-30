@@ -23,442 +23,467 @@
     </h1>
 
     <br><hr><br> <!-- ========================================================================= -->
-   
+
+
+    <h1>System Management Views</h1>
+    <div style="margin-bottom:20px;">
+        <button onclick="showSection('bikeSection')">Bike Management</button>
+        <button onclick="showSection('issueSection')">Issue Management</button>
+        <button onclick="showSection('maintenanceSection')">Maintenance Management</button>
+    </div>
+    <br><hr><br> <!-- ========================================================================= -->
 
     <!-- ==================== Bike Management ==================== -->
-    <h1>Bike Management</h1>
-    <br>
+    <div id="bikeSection">
+        <h1>Bike Management</h1>
+        <br><hr><br> <!-- ========================================================================= -->
 
-    <!-- Show Station -->
-    <h2>Show Stations</h2>
-    <button id="showStationsBtn">Show Stations</button>
-    <div id="stationMsg"></div>
-    <br>
-    
-    <table id="StationTable" border="1">
-        <thead></thead>
-        <tbody></tbody>
-    </table>
+        <!-- Show Station -->
+        <h2>Show Stations</h2>
+        <button id="showStationsBtn">Show Stations</button>
+        <div id="stationMsg"></div>
+        <br>
+        
+        <table id="StationTable" border="1">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
 
 
-    <!-- Insert New Station -->
-    <h2>Insert New Station</h2>
+        <!-- Insert New Station -->
+        <h2>Insert New Station</h2>
 
-    <form id="insertStationForm">
-        Street Address:
-        <input type="text" id="stationStreet" placeholder="e.g. 123 Main St" required>
+        <form id="insertStationForm">
+            Street Address:
+            <input type="text" id="stationStreet" placeholder="e.g. 123 Main St" required>
+            <br><br>
+        
+            Postal Code:
+            <input type="text" id="stationPostal" placeholder="e.g. V6T1Z4" required>
+            <br><br>
+        
+            Station Name:
+            <input type="text" id="stationName" placeholder="e.g. Main Station" required>
+            <br><br>
+        
+            <button type="submit">Insert</button>
+        </form>
+        
+        <div id="insertStationMsg"></div>
         <br><br>
     
-        Postal Code:
-        <input type="text" id="stationPostal" placeholder="e.g. V6T1Z4" required>
-        <br><br>
+        <!-- Delete Station -->
+        <h2>Delete Station</h2>
+
+        <form id="deleteStationForm">
+            Street Address:
+            <input type="text" id="deleteStreet" required><br><br>
+        
+            Postal Code:
+            <input type="text" id="deletePostal" required><br><br>
+        
+            <button type="submit">Delete</button>
+        </form>
+        
+        <div id="deleteStationMsg"></div>
+        <br><hr><br> <!-- ========================================================================= -->
+
+
+        <!-- Show Bikes -->
+        <h2>Show Bikes</h2>
+        <button id="showBikesBtn">Show Bikes</button>
+        <div id="bikeMsg"></div>
+        <br>
+
+        <table id="BikeTable" border="1">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
+
     
-        Station Name:
-        <input type="text" id="stationName" placeholder="e.g. Main Station" required>
-        <br><br>
+        <!-- Insert New Bike -->
+        <h2>Insert New Bike</h2>
+        <form id="insertBikeForm">
+            BikeID: <input type="text" id="bikeID" placeholder="Enter BikeID (e.g. B001)" required> <br><br>
+            Brand: <input type="text" id="brand" placeholder="Enter brand (e.g. Trek)"> <br><br>
+            Last Service Date: <input type="date" id="lastServiceDate"> <br><br>
+            Deployment Date: <input type="date" id="deploymentDate"> <br><br>
+            Status: 
+            <select id="status" required>
+                <option value="">Select Status</option>
+                <option value="Available">Available</option>
+                <option value="In Use">In Use</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Out of Service">Out of Service</option>
+            </select>
+            <br><br>
+            Street Address: <input type="text" id="streetAddress" placeholder="Enter street (e.g. 123 Main St)"> <br><br>
+            Postal Code: <input type="text" id="postalCode" placeholder="Enter postal code (e.g. V6T1Z4)"> <br><br>
+        
+            <button type="submit">Insert</button>
+        </form>
+        
+        <div id="insertBikeMsg"></div>
+        <br><hr><br> <!-- ========================================================================= -->
     
-        <button type="submit">Insert</button>
-    </form>
     
-    <div id="insertStationMsg"></div>
-    <br><br>
-   
-    <!-- Delete Station -->
-    <h2>Delete Station</h2>
-
-    <form id="deleteStationForm">
-        Street Address:
-        <input type="text" id="deleteStreet" required><br><br>
-    
-        Postal Code:
-        <input type="text" id="deletePostal" required><br><br>
-    
-        <button type="submit">Delete</button>
-    </form>
-    
-    <div id="deleteStationMsg"></div>
-    <br><br>
+        <!-- Update bike status -->
+        <h2>Update Bike Status</h2>
+        <form id="updateBikeForm">
+            Bike ID: <input type="text" id="updateBikeID" required> <br><br>
+            New Status: 
+            <select id="updateStatus" required>
+                <option value="">Select Status</option>
+                <option value="Available">Available</option>
+                <option value="In Use">In Use</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Out of Service">Out of Service</option>
+            </select> <br><br>
+            <button type="submit">Update</button>
+        </form>
+        <div id="updateBikeMsg"></div>
+        <br><hr><br> <!-- ========================================================================= -->
 
 
-    <!-- Show Bikes -->
-    <h2>Show Bikes</h2>
-    <button id="showBikesBtn">Show Bikes</button>
-    <div id="bikeMsg"></div>
-    <br>
+        <!-- Delete bikes -->
+        <h2>Delete Bike</h2>
 
-    <table id="BikeTable" border="1">
-        <thead></thead>
-        <tbody></tbody>
-    </table>
-    <br><br>
-
-   
-    <!-- Insert New Bike -->
-    <h2>Insert New Bike</h2>
-    <form id="insertBikeForm">
-        BikeID: <input type="text" id="bikeID" placeholder="Enter BikeID (e.g. B001)" required> <br><br>
-        Brand: <input type="text" id="brand" placeholder="Enter brand (e.g. Trek)"> <br><br>
-        Last Service Date: <input type="date" id="lastServiceDate"> <br><br>
-        Deployment Date: <input type="date" id="deploymentDate"> <br><br>
-        Status: 
-        <select id="status" required>
-            <option value="">Select Status</option>
-            <option value="Available">Available</option>
-            <option value="In Use">In Use</option>
-            <option value="Maintenance">Maintenance</option>
-            <option value="Out of Service">Out of Service</option>
-        </select>
-        <br><br>
-        Street Address: <input type="text" id="streetAddress" placeholder="Enter street (e.g. 123 Main St)"> <br><br>
-        Postal Code: <input type="text" id="postalCode" placeholder="Enter postal code (e.g. V6T1Z4)"> <br><br>
-    
-        <button type="submit">Insert</button>
-    </form>
-    
-    <div id="insertBikeMsg"></div>
-    <br><br>
-   
-   
-    <!-- Update bike status -->
-    <h2>Update Bike Status</h2>
-    <form id="updateBikeForm">
-        Bike ID: <input type="text" id="updateBikeID" required> <br><br>
-        New Status: 
-        <select id="updateStatus" required>
-            <option value="">Select Status</option>
-            <option value="Available">Available</option>
-            <option value="In Use">In Use</option>
-            <option value="Maintenance">Maintenance</option>
-            <option value="Out of Service">Out of Service</option>
-        </select> <br><br>
-        <button type="submit">Update</button>
-    </form>
-    <div id="updateBikeMsg"></div>
-    <br><br>
+        <form id="deleteBikeForm">
+            Bike ID:
+            <input type="text" id="deleteBikeID" placeholder="Enter BikeID (e.g. B001)" required>
+            <br><br>
+        
+            <button type="submit">Delete</button>
+        </form>
+        
+        <div id="deleteBikeMsg"></div>
+        <br><hr><br> <!-- ========================================================================= -->
 
 
-    <!-- Delete bikes -->
-    <h2>Delete Bike</h2>
+        <!-- Search bikes -->
+        <h2>Search Bikes</h2>
+        <form id="searchBikeForm">
+            Status: 
+            <select id="searchStatus" required>
+                <option value="">Select Status</option>
+                <option value="Available">Available</option>
+                <option value="In Use">In Use</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Out of Service">Out of Service</option>
+            </select> <br><br>
+            Brand: <input type="text" id="searchBrand"> <br><br>
+            Postal Code: <input type="text" id="searchPostalCode"> <br><br>
+            <button type="submit">Search</button>
+        </form>
 
-    <form id="deleteBikeForm">
-        Bike ID:
-        <input type="text" id="deleteBikeID" placeholder="Enter BikeID (e.g. B001)" required>
-        <br><br>
-    
-        <button type="submit">Delete</button>
-    </form>
-    
-    <div id="deleteBikeMsg"></div>
-    <br><br>
-
-
-    <!-- Search bikes -->
-    <h2>Search Bikes</h2>
-    <form id="searchBikeForm">
-        Status: 
-        <select id="searchStatus" required>
-            <option value="">Select Status</option>
-            <option value="Available">Available</option>
-            <option value="In Use">In Use</option>
-            <option value="Maintenance">Maintenance</option>
-            <option value="Out of Service">Out of Service</option>
-        </select> <br><br>
-        Brand: <input type="text" id="searchBrand"> <br><br>
-        Postal Code: <input type="text" id="searchPostalCode"> <br><br>
-        <button type="submit">Search</button>
-    </form>
-
-    <table id="searchBikeTable" border="1">
-        <thead>
-            <tr>
-                <th>BikeID</th>
-                <th>Brand</th>
-                <th>LastServiceDate</th>
-                <th>DeploymentDate</th>
-                <th>Status</th>
-                <th>StreetAddress</th>
-                <th>PostalCode</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <br><br>
+        <table id="searchBikeTable" border="1">
+            <thead>
+                <tr>
+                    <th>BikeID</th>
+                    <th>Brand</th>
+                    <th>LastServiceDate</th>
+                    <th>DeploymentDate</th>
+                    <th>Status</th>
+                    <th>StreetAddress</th>
+                    <th>PostalCode</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
 
 
-    <!-- Count bikes per station -->
-    <h2>Count Bikes Per Station</h2>
-    <button id="countBikesBtn">Count Bikes Per Station</button>
+        <!-- Count bikes per station -->
+        <h2>Count Bikes Per Station</h2>
+        <button id="countBikesBtn">Count Bikes Per Station</button>
 
-    <table id="groupByBikeTable" border="1">
-        <thead>
-            <tr>
-                <th>StreetAddress</th>
-                <th>PostalCode</th>
-                <th>BikeCount</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <br><br>
+        <table id="groupByBikeTable" border="1">
+            <thead>
+                <tr>
+                    <th>StreetAddress</th>
+                    <th>PostalCode</th>
+                    <th>BikeCount</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
+    </div>
+
+
+
+
+
+
 
 
      <!-- ==================== Issue Management ==================== -->
-    <hr>
-    <h1>Issue Management</h1>
-    <br>
+    <div id="issueSection" style="display:none;">
+        <h1>Issue Management</h1>
+        <br><hr><br> <!-- ========================================================================= -->
 
-    
-    <!-- Show Issue -->
-    <h2>Show Issue Record</h2>
-    <table id="Issue" border="1">
-        <thead>
-            <tr>
-                <!--Table head, need to be adjusted accordingly to align with your own.-->
-                <th>IssueID</th>
-                <th>ReportTime</th>
-                <th>ConditionScore</th>
-                <th>BikeID</th>
-                <th>InspectorID</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-    <br><br>
-
-
-    <!-- Insert a given issue record -->
-    <h2> Insert An Issue Record</h2>
-    <form id="insertIssue">
-        IssueID: 
-        <input type="text" id="insertIssueID" placeholder="e.g. I001" required><br><br>
         
-        Description:
-            <select id="insertDescription" required>
-                <option value="">Select Issue Type</option>
-                <option value="Minor scratch">Minor scratch</option>
-                <option value="Loose brake">Loose brake</option>
-                <option value="Flat tire">Flat tire</option>
-                <option value="Broken chain">Broken chain</option>
-                <option value="Frame damage">Frame damage</option>
-            </select><br><br>
+        <!-- Show Issue -->
+        <h2>Show Issue Record</h2>
+        <table id="Issue" border="1">
+            <thead>
+                <tr>
+                    <!--Table head, need to be adjusted accordingly to align with your own.-->
+                    <th>IssueID</th>
+                    <th>ReportTime</th>
+                    <th>ConditionScore</th>
+                    <th>BikeID</th>
+                    <th>InspectorID</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
+
+
+        <!-- Insert a given issue record -->
+        <h2> Insert An Issue Record</h2>
+        <form id="insertIssue">
+            IssueID: 
+            <input type="text" id="insertIssueID" placeholder="e.g. I001" required><br><br>
+            
+            Description:
+                <select id="insertDescription" required>
+                    <option value="">Select Issue Type</option>
+                    <option value="Minor scratch">Minor scratch</option>
+                    <option value="Loose brake">Loose brake</option>
+                    <option value="Flat tire">Flat tire</option>
+                    <option value="Broken chain">Broken chain</option>
+                    <option value="Frame damage">Frame damage</option>
+                </select><br><br>
+            
+            BikeID: 
+            <input type="text" id="insertBikeID" placeholder="e.g. B001" required><br><br>
+            
+            Insepector: 
+                <select id="insertInspectorID" required>
+                    <option value="">Select Inspector</option>
+                    <option value="S006">Anna(S006)</option>
+                    <option value="S007">Bella (S007)</option>
+                    <option value="S008">Cindy (S008)</option>
+                    <option value="S009">Diana (S009)</option>
+                    <option value="S010">Eva (S010)</option>
+                </select>
+            <button type="submit"> insert </button> <br>
+        </form>
+        <div id="insertIssueMsg"></div>
+        <br><hr><br> <!-- ========================================================================= -->
+
+
+        <!-- Delete issue record -->
+        <h2>Delete Issue Record</h2>
+
+        <form id="deleteIssueForm">
+            Issue ID: 
+            <input type="text" id="deleteIssueId" placeholder="Enter IssueID (e.g. I001)" required>
+            <br><br>
         
-        BikeID: 
-        <input type="text" id="insertBikeID" placeholder="e.g. B001" required><br><br>
+            <button type="submit">Delete</button>
+        </form>
         
-        Insepector: 
-            <select id="insertInspectorID" required>
-                <option value="">Select Inspector</option>
-                <option value="S006">Anna(S006)</option>
-                <option value="S007">Bella (S007)</option>
-                <option value="S008">Cindy (S008)</option>
-                <option value="S009">Diana (S009)</option>
-                <option value="S010">Eva (S010)</option>
-            </select>
-        <button type="submit"> insert </button> <br>
-    </form>
-    <div id="insertIssueMsg"></div>
-    <br><br>
+        <div id="deleteIssueMsg"></div>
+        <br><hr><br> <!-- ========================================================================= -->
+        
+
+        <!-- Issue project -->
+        <h2>Issue Projection (Select Attributes)</h2>
+
+        <form id="projectionForm">
+
+            <label><input type="checkbox" value="IssueID"> IssueID</label>
+            <label><input type="checkbox" value="ReportTime"> ReportTime</label>
+            <label><input type="checkbox" value="ConditionScore"> ConditionScore</label>
+            <label><input type="checkbox" value="Description"> Description</label>
+            <label><input type="checkbox" value="BikeID"> BikeID</label>
+            <label><input type="checkbox" value="MaintenanceID"> MaintenanceID</label>
+            <label><input type="checkbox" value="InspectorID"> InspectorID</label>
+            <label><input type="checkbox" value="Result"> Result</label>
+
+            <br><br>
+            <button type="submit">Run Projection</button>
+        </form>
+
+        <br>
+
+        <table id="projectionTable" border="1">
+            <thead>
+                <tr id="projectionHeader"></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
 
 
-    <!-- Delete issue record -->
-    <h2>Delete Issue Record</h2>
+        <!-- Find BikeID with many issues-->
+        <h2>Find BikeID With Many Issues</h2>
 
-    <form id="deleteIssueForm">
-        Issue ID: 
-        <input type="text" id="deleteIssueId" placeholder="Enter IssueID (e.g. I001)" required>
+        <button id="BidWIssues"> Find </button>
         <br><br>
+        <table id="bikesTable" border="1">
+            <thead>
+                <tr>
+                    <th>BikeID</th>
+                    <th>Issue Count</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
     
-        <button type="submit">Delete</button>
-    </form>
-    
-    <div id="deleteIssueMsg"></div>
-    <br><br>
-    
-
-    <!-- Issue project -->
-    <h2>Issue Projection (Select Attributes)</h2>
-
-    <form id="projectionForm">
-
-        <label><input type="checkbox" value="IssueID"> IssueID</label>
-        <label><input type="checkbox" value="ReportTime"> ReportTime</label>
-        <label><input type="checkbox" value="ConditionScore"> ConditionScore</label>
-        <label><input type="checkbox" value="Description"> Description</label>
-        <label><input type="checkbox" value="BikeID"> BikeID</label>
-        <label><input type="checkbox" value="MaintenanceID"> MaintenanceID</label>
-        <label><input type="checkbox" value="InspectorID"> InspectorID</label>
-        <label><input type="checkbox" value="Result"> Result</label>
-
-        <br><br>
-        <button type="submit">Run Projection</button>
-    </form>
-
-    <br>
-
-    <table id="projectionTable" border="1">
-        <thead>
-            <tr id="projectionHeader"></tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <br><br>
+    </div>
 
 
-    <!-- Find BikeID with many issues-->
-    <h2>Find BikeID With Many Issues</h2>
 
-    <button id="BidWIssues"> Find </button>
-    <br><br>
-    <table id="bikesTable" border="1">
-        <thead>
-            <tr>
-                <th>BikeID</th>
-                <th>Issue Count</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <br><br>
-    
+
+
+
+
 
     <!-- ==================== Maintenance Task & Technician Management ==================== -->
-    <hr>
-    <h1>Maintenance Task & Technician Management</h1>
-    <br>
+    <div id="maintenanceSection" style="display:none;">
+        <h1>Maintenance Task & Technician Management</h1>
+        <br><hr><br> <!-- ========================================================================= -->
 
 
-    <!-- Show maintenance tasks -->
-    <h2>Show Maintenance Tasks</h2>
-    <table id="MaintenanceTask" border="1">
-        <thead>
-            <tr>
-                <!--Table head, need to be adjusted accordingly to align with your own.-->
-                <th>TaskID</th>
-                <th>MaintenanceID</th>
-                <th>Duration</th>
-                <th>StartTime</th>
-                <th>EndTime</th>
-                <th>TechnicianID</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-    <br><br>
+        <!-- Show maintenance tasks -->
+        <h2>Show Maintenance Tasks</h2>
+        <table id="MaintenanceTask" border="1">
+            <thead>
+                <tr>
+                    <!--Table head, need to be adjusted accordingly to align with your own.-->
+                    <th>TaskID</th>
+                    <th>MaintenanceID</th>
+                    <th>Duration</th>
+                    <th>StartTime</th>
+                    <th>EndTime</th>
+                    <th>TechnicianID</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
 
 
-    <!-- Show Technician -->
-    <h2>Show Technician</h2>
-    <table id="Technician" border="1">
-        <thead>
-            <tr>
-                <th>StaffID</th>
-                <th>Name</th>
-                <th>Contact</th>
-                <th>Assigned Area</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-    <br><br>
+        <!-- Show Technician -->
+        <h2>Show Technician</h2>
+        <table id="Technician" border="1">
+            <thead>
+                <tr>
+                    <th>StaffID</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Assigned Area</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
 
 
-    <!-- Insert a given maintenance task -->
-    <h2> Insert A New Task</h2>
-    <form id="insertMaintenanceTask">
-        Task ID: 
-        <input type="text" id="insertTaskID" placeholder="e.g. T001" required><br><br>
-       
-        Maintenance Type:
-            <select id="insertMaintenanceID" required>
-                <option value="">Select Maintenance Type</option>
-                <option value="M001">Battery Check</option>
-                <option value="M002">Brake Fix</option>
-                <option value="M003">Tire Replacement</option>
-                <option value="M004">Cleaning</option>
-                <option value="M005">Others</option>
-            </select>
+        <!-- Insert a given maintenance task -->
+        <h2> Insert A New Task</h2>
+        <form id="insertMaintenanceTask">
+            Task ID: 
+            <input type="text" id="insertTaskID" placeholder="e.g. T001" required><br><br>
         
-        Technician: 
-            <select id="insertTechnicianID" required>
-                <option value="">Select Technician</option>
-                <option value="S001">Tom (S001)</option>
-                <option value="S002">Jerry (S002)</option>
-                <option value="S003">Mark (S003)</option>
-                <option value="S004">Luke (S004)</option>
-                <option value="S005">John (S005)</option>
-            </select>
-        <button type="submit"> insert </button> <br>
-    </form>
-    <div id="insertResultMsg"></div>
-    <br><br>
+            Maintenance Type:
+                <select id="insertMaintenanceID" required>
+                    <option value="">Select Maintenance Type</option>
+                    <option value="M001">Battery Check</option>
+                    <option value="M002">Brake Fix</option>
+                    <option value="M003">Tire Replacement</option>
+                    <option value="M004">Cleaning</option>
+                    <option value="M005">Others</option>
+                </select>
+            
+            Technician: 
+                <select id="insertTechnicianID" required>
+                    <option value="">Select Technician</option>
+                    <option value="S001">Tom (S001)</option>
+                    <option value="S002">Jerry (S002)</option>
+                    <option value="S003">Mark (S003)</option>
+                    <option value="S004">Luke (S004)</option>
+                    <option value="S005">John (S005)</option>
+                </select>
+            <button type="submit"> insert </button> <br>
+        </form>
+        <div id="insertResultMsg"></div>
+        <br><hr><br> <!-- ========================================================================= -->
 
 
-    <!-- Delete a maintenance task-->
-    <h2>Delete A Task</h2>
+        <!-- Delete a maintenance task-->
+        <h2>Delete A Task</h2>
 
-    <form id="deleteMaintenanceTask">
-        TaskID: 
-        <input type="text" id="deleteTaskID" placeholder="e.g. T001" required><br><br>
-    
-        <button type="submit">Delete</button>
-    </form>
-    
-    <div id="deleteTaskMsg"></div>
-    <br><br>
-    
+        <form id="deleteMaintenanceTask">
+            TaskID: 
+            <input type="text" id="deleteTaskID" placeholder="e.g. T001" required><br><br>
+        
+            <button type="submit">Delete</button>
+        </form>
+        
+        <div id="deleteTaskMsg"></div>
+        <br><hr><br> <!-- ========================================================================= -->
+        
 
-    <!-- Get tasks by technician ID -->
-    <h2>Get Tasks By Technician ID</h2>
-    <p>Please select a technician</p>
-    <form id="getTasksByTechnicianID">
-        TechnicianID: 
-            <select id="queryTechnicianID" required>
-                <option value="">Select Technician</option>
-                <option value="S001">Tom (S001)</option>
-                <option value="S002">Jerry (S002)</option>
-                <option value="S003">Mark (S003)</option>
-                <option value="S004">Luke (S004)</option>
-                <option value="S005">John (S005)</option>
-            </select>
-        <button type="submit"> submit </button> <br>
-    </form>
-    <div id="queryResultMsg"></div>
-    
-    <table id="queryTable" border="1">
-        <thead></thead>
-        <tbody></tbody>
-    </table>
-    <br><br>
-
-
-    <!-- Get technicians above average workload-->
-    <h2>Get Technicians Above Average Workload</h2>
-    <button id="getTechnicianAboveAverageWorkload"> Extract </button> <br><br>
-    <div id="aboveAvgWorkloadMsg"></div>
-
-    <table id="aboveAvgWorkloadTable" border="1">
-        <thead></thead>
-        <tbody></tbody>
-    </table>
-    <br><br>
+        <!-- Get tasks by technician ID -->
+        <h2>Get Tasks By Technician ID</h2>
+        <p>Please select a technician</p>
+        <form id="getTasksByTechnicianID">
+            TechnicianID: 
+                <select id="queryTechnicianID" required>
+                    <option value="">Select Technician</option>
+                    <option value="S001">Tom (S001)</option>
+                    <option value="S002">Jerry (S002)</option>
+                    <option value="S003">Mark (S003)</option>
+                    <option value="S004">Luke (S004)</option>
+                    <option value="S005">John (S005)</option>
+                </select>
+            <button type="submit"> submit </button> <br>
+        </form>
+        <div id="queryResultMsg"></div>
+        
+        <table id="queryTable" border="1">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
 
 
-    <!-- Get technicians work on all tasks-->
-    <h2>Get Technicians Work On All Tasks</h2>
-    <button id="getTechnicianWorkOnAllTasks"> Extract </button> <br><br>
-    <!-- A placeholder to display the count result. -->
-    <div id="workOnAllMsg"></div>
+        <!-- Get technicians above average workload-->
+        <h2>Get Technicians Above Average Workload</h2>
+        <button id="getTechnicianAboveAverageWorkload"> Extract </button> <br><br>
+        <div id="aboveAvgWorkloadMsg"></div>
 
-    <table id="workOnAllTable" border="1">
-        <thead></thead>
-        <tbody></tbody>
-    </table>
+        <table id="aboveAvgWorkloadTable" border="1">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
 
-    <br><br>
 
+        <!-- Get technicians work on all tasks-->
+        <h2>Get Technicians Work On All Tasks</h2>
+        <button id="getTechnicianWorkOnAllTasks"> Extract </button> <br><br>
+        <!-- A placeholder to display the count result. -->
+        <div id="workOnAllMsg"></div>
+
+        <table id="workOnAllTable" border="1">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+        <br><hr><br> <!-- ========================================================================= -->
+
+    </div>
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
