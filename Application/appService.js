@@ -730,7 +730,7 @@ async function getTasksByTechnicianID(TechnicianID) {
             return { success: true, data: [], message: "Technician exists but has no tasks."}
         }
         
-        return {success: true, data: result.rows, columns: result.metaData.map(col => col.name)};
+        return {success: true, data: result.rows, columns: result.metaData.map(col => col.name), message: "Here are the tasks assgined to this technician:"};
 
     }).catch(() => {
         return { success: false, message: "Query failed" };

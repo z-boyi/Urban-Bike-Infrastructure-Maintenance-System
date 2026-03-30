@@ -593,7 +593,7 @@ async function getTasksByTechnicianID(event) {
     const messageElement = document.getElementById('queryResultMsg');
 
     if (responseData.success) {
-        messageElement.textContent = "Here are the tasks assigned to this technician";
+        messageElement.textContent = responseData.message;
         
         const tableElement = document.getElementById('queryTable');
         const tableHead = tableElement.querySelector('thead');
