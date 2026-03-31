@@ -62,6 +62,16 @@ button:active {
     background-color: rgb(12, 67, 187);
 }
 
+.navButton {
+    font-size: 20px;
+    padding: 14px 22px;
+    margin: 10px;
+}
+
+.buttonGroup {
+    text-align: center;
+}
+
 /* INPUT STYLES */
 input, textarea {
     width: 100%;

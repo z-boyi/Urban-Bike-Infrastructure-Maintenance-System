@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
-    <!-- <link rel="stylesheet" href="styles.css">   -->
+    <link rel="stylesheet" href="styles.css">  
 
     <title>Urban Bike Infrastructure Maintenance System</title>
 </head>
@@ -15,21 +15,21 @@
     <!-- Display the current status of the database connection. 
          !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
          -->
-    <h1>Database Connection Status: 
+    <!-- <h1>Database Connection Status:  -->
         <!-- An in-line placeholder to display connection status. -->
-        <span id="dbStatus"> </span>
+        <!-- <span id="dbStatus"> </span> -->
         <!-- A loading GIF, will be hided once get the status. -->
-        <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
-    </h1>
+        <!-- <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading..."> -->
+    <!-- </h1> -->
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <!-- <br><hr><br> ========================================================================= -->
 
 
     <h1>System Management Views</h1>
     <div style="margin-bottom:20px;">
-        <button onclick="showSection('bikeSection')">Bike Management</button>
-        <button onclick="showSection('issueSection')">Issue Management</button>
-        <button onclick="showSection('maintenanceSection')">Maintenance Management</button>
+        <button class="navButton" onclick="showSection('bikeSection')">Bike Management</button>
+        <button class="navButton" onclick="showSection('issueSection')">Issue Management</button>
+        <button class="navButton" onclick="showSection('maintenanceSection')">Maintenance Management</button>
     </div>
     <br><hr><br> <!-- ========================================================================= -->
 
@@ -349,7 +349,7 @@
 
     <!-- ==================== Maintenance Task & Technician Management ==================== -->
     <div id="maintenanceSection" style="display:none;">
-        <h1>Maintenance Task & Technician Management</h1>
+        <h1>Maintenance Management</h1>
         <br><hr><br> <!-- ========================================================================= -->
 
 
