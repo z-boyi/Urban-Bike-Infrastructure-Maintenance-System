@@ -745,6 +745,29 @@ async function deleteMaintenanceTask(event) {
     }
 }
 
+// update task status
+async function updateTaskStatus(event) {
+    event.preventDefault();
+    const TaskID = document.getElementById('updateTaskID').value;
+    const messageElement = document.getElementById("updateTaskMsg");
+
+    const response = await fetch("/maintenance-task/update", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ TaskID })
+    });
+
+    const data = await response.json();
+
+    messageElement.textContent = data.message;
+
+    if (data.success) {
+        fetchMaintenanceTask();
+    }
+}
+
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -774,5 +797,6 @@ window.onload = function() {
     document.getElementById("getTasksByTechnicianID").addEventListener("submit", getTasksByTechnicianID);
     document.getElementById("getTechnicianAboveAverageWorkload").addEventListener("click", getTechnicianAboveAverageWorkload);
     document.getElementById("getTechnicianWorkOnAllTasks").addEventListener("click", getTechnicianWorkOnAllTasks);
-    document.getElementById("deleteMaintenanceTask").addEventListener('submit', deleteMaintenanceTask);
+    document.getElementById("deleteMaintenanceTask").addEventListener("submit", deleteMaintenanceTask);
+    document.getElementById("updateTaskStatus").addEventListener("submit", updateTaskStatus);
 };

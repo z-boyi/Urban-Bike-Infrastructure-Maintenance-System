@@ -333,5 +333,11 @@ router.post("/maintenance-task/delete", async (req, res) => {
     res.json(deleteResult);
 });
 
+router.post("/maintenance-task/update", async (req, res) => {
+    const {TaskID} = req.body;
+    const updateResult = await appService.updateTaskStatus(TaskID);
+    res.json(updateResult);
+})
+
 
 module.exports = router;

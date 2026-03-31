@@ -806,7 +806,7 @@ async function fetchMaintenanceTask() {
             SELECT 
                 TaskID,
                 MaintenanceID,
-                SUBSTR(Duration, 5, 8) AS Duration,
+                SUBSTR(TO_CHAR(Duration), 5, 8) AS Duration,
                 TO_CHAR(StartTime, 'YYYY-MM-DD HH24:MI:SS') AS StartTime,
                 TO_CHAR(EndTime, 'YYYY-MM-DD HH24:MI:SS') AS EndTime,
                 TechnicianID
@@ -860,6 +860,39 @@ async function deleteMaintenanceTask(TaskID) {
     });
 }
 
+// update task status (i.e., task complete)
+async function updateTaskStatus(TaskID) {
+    return await withOracleDB(async (connection) => {
+        // check existence of the given task id
+        const checkExistence = await connection.execute(
+            `
+            SELECT 1
+            FROM MaintenanceTask MT
+            WHERE MT.TaskID = :TaskID
+            `,
+            { TaskID },
+        );
+        if (checkExistence.rows.length === 0) {
+            return { success: false, message: "TaskID does not exist."};
+        } 
+
+        // update status
+        const result = await connection.execute(
+            `
+            UPDATE MaintenanceTask
+            SET EndTime = CURRENT_TIMESTAMP,
+            Duration = CURRENT_TIMESTAMP - StartTime
+            WHERE TaskID = :TaskID AND EndTime IS NULL
+            `,
+            { TaskID },
+            { autoCommit: true }
+        );
+        return { success: true, message: "Task is updated successfully"};
+    }).catch(() => {
+        return { success: false, message: "Update failed." };
+    });
+}
+
 module.exports = {
     fetchBikes,
     testOracleConnection,
@@ -885,5 +918,6 @@ module.exports = {
     getTechnicianWorkOnAllTasks,
     fetchMaintenanceTask,
     fetchTechnician,
-    deleteMaintenanceTask
+    deleteMaintenanceTask,
+    updateTaskStatus
 };
