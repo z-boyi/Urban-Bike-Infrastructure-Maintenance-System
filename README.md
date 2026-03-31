@@ -5,10 +5,10 @@ This project models an urban bike infrastructure maintenance system for a city-w
 
 The goal of the system is to help ensure that bikes remain safe, functional, and available for public use by tracking maintenance workflows, reported issues, and repair activities.
 
-## Group Member
-- Boyi Zhang
-- Runtan Zhang
-- Xinghao Huang
+## Group Members
+- Boyi Zhang (bzhang54)
+- Runtan Zhang (rzhan114)
+- Xinghao Huang (xh512)
 
 ## System Features
 The application demonstrates how a database system can support real-world maintenance operations.
