@@ -507,20 +507,6 @@ async function deleteIssueRecord(issueId) {
 async function getSelectedIssueAttributes(attributes) {
     return await withOracleDB(async (connection) => {
 
-        // const validColumns = {
-        //     IssueRecord: [
-        //         "IssueID",
-        //         "ReportTime",
-        //         "ConditionScore",
-        //         "Description",
-        //         "BikeID",
-        //         "MaintenanceID",
-        //         "InspectorID"
-        //     ],
-        //     IssueRule: [
-        //         "Result"
-        //     ]
-        // };
 
         const columnMap = {
             IssueID: "IR.IssueID",
@@ -550,11 +536,11 @@ async function getSelectedIssueAttributes(attributes) {
         `;
 
         const result = await connection.execute(query);
-        return result.rows;
+        return {success: true, data: result.rows};
 
     }).catch((err) => {
         console.error(err);
-        return [];
+        return {success: true, data: []};
     });
 }
 
@@ -570,10 +556,10 @@ async function getBikesWithManyIssues() {
             `
         );
 
-        return result.rows;
+        return {success: true, data: result.rows};
     }).catch((err) => {
         console.error(err);
-        return [];
+        return {success: false, data: []};
     });
 }
 

@@ -194,18 +194,26 @@ router.post("/issue/delete", async (req, res) => {
 
 router.post("/issue/projection", async (req, res) => {
     const { attributes } = req.body;
-    const tableContent = await appService.getSelectedIssueAttributes(attributes);
-    res.json({ 
-        data: tableContent 
-    });
+    const projectResult = await appService.getSelectedIssueAttributes(attributes);
+    if (projectResult.success) {
+        res.json({ 
+            success: true,
+            data: projectResult.data 
+        });
+    } else {
+        res.status(500).json({
+            success: false, 
+            data: [] 
+        });
+    }
 });
 
 router.get("/issue/bike-many-issues", async (req, res) => {
-    const tableContent = await appService.getBikesWithManyIssues();
-    if (tableContent) {
+    const tableResult = await appService.getBikesWithManyIssues();
+    if (tableResult.success) {
         res.json({
             success: true,
-            data: tableContent
+            data: tableResult.data
         });
     } else {
         res.status(500).json({

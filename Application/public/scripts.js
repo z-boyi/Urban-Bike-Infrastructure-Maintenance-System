@@ -395,6 +395,7 @@ async function runProjection(event) {
     });
 
     const responseData = await response.json();
+    const messageElement = document.getElementById('projectionMsg');
     const tableBody = document.querySelector("#projectionTable tbody");
     const headerRow = document.getElementById("projectionHeader");
 
@@ -409,25 +410,28 @@ async function runProjection(event) {
         headerRow.appendChild(th);
     });
 
+    if (responseData.success) {
+        const rows = responseData.data;
 
-    const rows = responseData.data;
-
-    if (!rows || rows.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="${attributes.length}">No data</td></tr>`;
-        return;
-    }
-
-    rows.forEach(row => {
-        const tr = document.createElement("tr");
-
-        row.forEach(value => {
-            const td = document.createElement("td");
-            td.textContent = value;
-            tr.appendChild(td);
+        if (!rows || rows.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="${attributes.length}">No data</td></tr>`;
+            return;
+        }
+    
+        rows.forEach(row => {
+            const tr = document.createElement("tr");
+    
+            row.forEach(value => {
+                const td = document.createElement("td");
+                td.textContent = value;
+                tr.appendChild(td);
+            });
+    
+            tableBody.appendChild(tr);
         });
-
-        tableBody.appendChild(tr);
-    });
+    } else {
+        messageElement.textContent = "Error getting projection result!";
+    }
 }
 
 //Return bikeID With many issues
@@ -440,9 +444,10 @@ async function BidWIssues() {
     console.log("DATA:", responseData);
 
     const tableBody = document.querySelector("#bikesTable tbody");
-
+    const messageElement = document.getElementById('BidIssueMsg');
     if (!tableBody) {
         console.error("tableBody NOT FOUND");
+        messageElement.textContent = "tableBody NOT FOUND";
         return;
     }
 
@@ -470,6 +475,8 @@ async function BidWIssues() {
 
             tableBody.appendChild(tr);
         });
+    } else {
+        messageElement.textContent = "Error finding bike IDs!";
     }
 }
 
