@@ -282,7 +282,10 @@ async function fetchBikes() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `
-            SELECT BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode
+            SELECT BikeID, Brand, 
+            TO_CHAR(LastServiceDate, 'YYYY-MM-DD') AS LastServiceDate,
+            TO_CHAR(DeploymentDate, 'YYYY-MM-DD') AS DeploymentDate, 
+            Status, StreetAddress, PostalCode
             FROM Bike
             ORDER BY BikeID
             `
