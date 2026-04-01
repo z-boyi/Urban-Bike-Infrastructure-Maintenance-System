@@ -368,7 +368,7 @@ async function deleteIssue(event) {
         messageElement.textContent = "Issue deleted successfully!";
         fetchIssue();
     } else {
-        messageElement.textContent = "Error deleting issue!";
+        messageElement.textContent = "IssueID not found!";
     }
 }
 
