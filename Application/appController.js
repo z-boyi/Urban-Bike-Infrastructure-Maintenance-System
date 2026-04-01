@@ -184,6 +184,13 @@ router.get("/bike/count-per-station", async (req, res) => {
 
 router.post("/issue/delete", async (req, res) => {
     const { issueId } = req.body;
+    //security validation
+    if(!issueId||typeof issueId !== "string"||issueId.length !==4 || IssueId[0] !== "I") {
+        return res.status(400).json({
+            success:false,
+            message: "Invalid IssueID"
+        });
+    }
     const deleteResult = await appService.deleteIssueRecord(issueId);
     if (deleteResult) {
         res.json({ success: true });
