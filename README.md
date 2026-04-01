@@ -63,30 +63,56 @@ The system captures relationships between these entities to support the operatio
 
 ## Repository Structure
 ```text
-project-root
-│
-├── Application/
-│   ├── draft/
-│   ├── public/                 # Frontend files
-│   ├── scripts/
-│   ├── utils/
-│   ├── .env                    # Environment variables (not tracked in git)
-│   ├── .gitignore
-│   ├── appController.js        # Express route handlers
-│   ├── appService.js           # Database queries and service logic
-│   ├── server.js               # Express server entry point
-│   ├── package.json
+.
+├── Application
+│   ├── README.md
+│   ├── appController.js
+│   ├── appService.js
+│   ├── draft
+│   │   ├── README.md
+│   │   ├── dev
+│   │   │   ├── index_BZ.html
+│   │   │   ├── index_RZ.html
+│   │   │   ├── index_XH.html
+│   │   │   ├── scripts_BZ.js
+│   │   │   ├── scripts_RZ.js
+│   │   │   └── scripts_XH.js
+│   │   ├── endpoints
+│   │   │   ├── endpoints_BZ.js
+│   │   │   ├── endpoints_RZ.js
+│   │   │   └── endpoints_XH.js
+│   │   └── queries
+│   │       ├── bikeQueries_BZ.js
+│   │       ├── issueQueries_RZ.js
+│   │       └── maintenanceQueries_XH.js
 │   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   ├── index.html
+│   │   ├── loading_100px.gif
+│   │   ├── scripts.js
+│   │   └── styles.css
 │   ├── remote-start.sh
+│   ├── scripts
+│   │   ├── mac
+│   │   │   ├── db-tunnel.sh
+│   │   │   ├── instantclient-setup.sh
+│   │   │   └── server-tunnel.sh
+│   │   ├── sql
+│   │   │   └── db.sql
+│   │   └── win
+│   │       ├── db-tunnel.cmd
+│   │       ├── instantclient-setup.cmd
+│   │       └── server-tunnel.cmd
+│   ├── server.js
+│   └── utils
+│       └── envUtil.js
+├── Project Deliverables
+│   ├── CPSC 304 Group 80 Milestone 1.pdf
+│   ├── CPSC 304 Group 80 Milestone 2.pdf
+│   ├── CPSC 304 Group 80 Milestone 3.pdf
+│   ├── CPSC 304 Group 80 Milestone 4.pdf
 │   └── README.md
-│
-├── Project Deliverables/
-│   ├── CPSC 304 Group 80 Milestone1.pdf
-│   ├── CPSC 304 Group 80 Milestone2.pdf
-│   ├── CPSC 304 Group 80 Milestone3.pdf
-│   ├── CPSC 304 Group 80 Milestone4.pdf
-│   └── README.md
-│
 └── README.md
 ```
 
