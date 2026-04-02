@@ -757,6 +757,8 @@ async function deleteMaintenanceTask(event) {
 async function updateTaskStatus(event) {
     event.preventDefault();
     const TaskID = document.getElementById('updateTaskID').value;
+    const NewTechnicianID = document.getElementById('updateTechnicianID').value || null;
+    const CompleteTask = document.getElementById('completeTask').checked;
     const messageElement = document.getElementById("updateTaskMsg");
 
     const response = await fetch("/maintenance-task/update", {
@@ -764,7 +766,7 @@ async function updateTaskStatus(event) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ TaskID })
+        body: JSON.stringify({ TaskID, NewTechnicianID, CompleteTask })
     });
 
     const data = await response.json();

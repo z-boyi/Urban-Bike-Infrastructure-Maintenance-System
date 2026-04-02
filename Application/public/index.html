@@ -429,6 +429,21 @@
             Task ID:
             <input type="text" id="updateTaskID" placeholder="e.g. T001" required><br><br> 
             <button type="submit">Update</button> <br>
+            
+            Reassign Technician (optional):
+            <select id="updateTechnicianID">
+                <option value="">Select Technician</option>
+                <option value="S001">Tom (S001)</option>
+                <option value="S002">Jerry (S002)</option>
+                <option value="S003">Mark (S003)</option>
+                <option value="S004">Luke (S004)</option>
+                <option value="S005">John (S005)</option>
+            </select>
+            <br><br>
+
+            Mark task as completed:
+            <input type="checkbox" id="completeTask">
+            <br><br>
         </form>
 
         <div id="updateTaskMsg"></div>

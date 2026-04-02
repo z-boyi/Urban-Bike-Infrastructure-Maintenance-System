@@ -849,34 +849,57 @@ async function deleteMaintenanceTask(TaskID) {
     });
 }
 
-// update task status (i.e., task complete)
-async function updateTaskStatus(TaskID) {
+async function updateTaskStatus(TaskID, NewTechnicianID = null, CompleteTask = false) {
     return await withOracleDB(async (connection) => {
-        // check existence of the given task id
+        // check existence of task and get EndTime
         const checkExistence = await connection.execute(
             `
-            SELECT 1
-            FROM MaintenanceTask MT
-            WHERE MT.TaskID = :TaskID
+            SELECT EndTime
+            FROM MaintenanceTask
+            WHERE TaskID = :TaskID
             `,
-            { TaskID },
+            { TaskID }
         );
         if (checkExistence.rows.length === 0) {
-            return { success: false, message: "TaskID does not exist."};
-        } 
+            return { success: false, message: "TaskID does not exist." };
+        }
+       
+        const endTime = checkExistence.rows[0][0];
 
-        // update status
-        const result = await connection.execute(
-            `
-            UPDATE MaintenanceTask
-            SET EndTime = CURRENT_TIMESTAMP,
-            Duration = CURRENT_TIMESTAMP - StartTime
-            WHERE TaskID = :TaskID AND EndTime IS NULL
-            `,
-            { TaskID },
-            { autoCommit: true }
-        );
-        return { success: true, message: "Task is updated successfully"};
+        // check if completed task
+        if (endTime !== null) {
+            return { success: false, message: "Task is already completed." };
+        }
+       
+        // reassign technician if provided
+        if (NewTechnicianID !== null) {
+
+            await connection.execute(
+                `
+                UPDATE MaintenanceTask
+                SET TechnicianID = :NewTechnicianID
+                WHERE TaskID = :TaskID
+                `,
+                { TaskID, NewTechnicianID },
+                { autoCommit: true }
+            );
+        }
+       
+        // update task status
+        if (CompleteTask) {
+            await connection.execute(
+                `
+                UPDATE MaintenanceTask
+                SET EndTime = CURRENT_TIMESTAMP,
+                    Duration = CURRENT_TIMESTAMP - StartTime
+                WHERE TaskID = :TaskID AND EndTime IS NULL
+                `,
+                { TaskID },
+                { autoCommit: true }
+            );
+        }
+        return { success: true, message: "Task updated successfully" };
+
     }).catch(() => {
         return { success: false, message: "Update failed." };
     });
