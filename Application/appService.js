@@ -591,7 +591,7 @@ async function fetchIssue() {
 }
 
 // insert issue
-async function insertIssue(IssueID, BikeID, Description, InspectorID) {
+async function insertIssue(IssueID, BikeID, Description, ConditionScore, InspectorID) {
     return await withOracleDB(async (connection) => {
         const bikeCheck = await connection.execute(
             `SELECT 1 FROM Bike WHERE BikeID = :BikeID`,
@@ -600,22 +600,25 @@ async function insertIssue(IssueID, BikeID, Description, InspectorID) {
         if (bikeCheck.rows.length === 0) {
             return { success: false, message: "BikeID does not exist." };
         }
-
-        const ruleResult = await connection.execute(
-            `SELECT ConditionScore 
-             FROM IssueRule 
-             WHERE Description = :Description`,
-            { Description }
+        const ruleCheck = await connection.execute(
+            `SELECT 1 FROM IssueRule 
+             WHERE ConditionScore = :ConditionScore 
+               AND Description = :Description`,
+            { ConditionScore, Description }
         );
-
-        if (ruleResult.rows.length === 0) {
-            return {
-                success: false,
-                message: "Invalid issue type (Description not found)."
-            };
+        if (ruleCheck.rows.length === 0) {
+            await connection.execute(
+                `INSERT INTO IssueRule 
+                 (ConditionScore, Description, Result)
+                 VALUES (:ConditionScore, :Description, :Result)`,
+                { ConditionScore, Description, Result: "Pending" },
+                { autoCommit: false }
+            );
         }
 
-        const ConditionScore = ruleResult.rows[0][0];
+        if (ruleCheck.rows.length !== 0) {
+            return { success: false, message: "Duplicate value: Description and ConditionScore already exits." };
+        }
 
         const inspectorCheck = await connection.execute(
             `SELECT 1 FROM Inspector WHERE StaffID = :InspectorID`,
@@ -633,8 +636,10 @@ async function insertIssue(IssueID, BikeID, Description, InspectorID) {
             (:IssueID, CURRENT_TIMESTAMP, :ConditionScore, :Description, :BikeID, :InspectorID)
             `,
             { IssueID, ConditionScore, Description, BikeID, InspectorID },
-            { autoCommit: true }
+            { autoCommit: false }
         );
+
+        await connection.commit();
 
         return {
             success: result.rowsAffected > 0,
@@ -642,11 +647,10 @@ async function insertIssue(IssueID, BikeID, Description, InspectorID) {
         };
 
     }).catch((err) => {
-
         console.error("Insert Issue Error:", err.message);
 
         if (err.errorNum === 1) {
-            return { success: false, message: "IssueID already exists." };
+            return { success: false, message: "Duplicate value: IssueID already exists." };
         }
 
         if (err.errorNum === 2291) {
