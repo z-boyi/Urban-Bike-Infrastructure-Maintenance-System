@@ -75,6 +75,13 @@ router.post('/station/delete', async (req, res) => {
 router.post('/bike/insert', async (req, res) => {
     const { BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode } = req.body;
 
+    if (BikeID.length !== 4 || BikeID[0] != "B") {
+        return res.json({
+            success: false,
+            message: "BikeID must be in the specific style."
+        });
+    }
+
     const insertResult = await appService.insertBike(
         BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode
     );
@@ -272,6 +279,12 @@ router.post('/issue/insert', async (req, res) => {
 
 router.post('/maintenance-task/insert', async (req, res) => {
     const { TaskID, MaintenanceID, TechnicianID } = req.body;
+    if (TaskID.length !== 4 || TaskID[0] != "T") {
+        return res.json({
+            success: false,
+            message: "TaskID must be in the specific style."
+        });
+    }
     const insertResult = await appService.insertMaintenanceTask(TaskID, MaintenanceID, TechnicianID);
     res.json(insertResult);
 });
