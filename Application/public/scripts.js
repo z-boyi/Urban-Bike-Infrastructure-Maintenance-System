@@ -509,6 +509,7 @@ async function insertIssue(event) {
     const Description = document.getElementById('insertDescription').value;
     const BikeID = document.getElementById('insertBikeID').value;
     const InspectorID = document.getElementById('insertInspectorID').value;
+    const ConditionScore = document.getElementById('insertConditionScore').value;
 
     const response = await fetch('/issue/insert', {
         method: 'POST',
@@ -518,6 +519,7 @@ async function insertIssue(event) {
         body: JSON.stringify({
             IssueID: IssueID,
             Description: Description,
+            ConditionScore: ConditionScore,
             BikeID: BikeID,
             InspectorID: InspectorID
         })
