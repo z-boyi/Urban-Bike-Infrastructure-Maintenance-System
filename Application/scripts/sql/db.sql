@@ -123,7 +123,7 @@ CREATE TABLE IssueRule (
 CREATE TABLE IssueRecord (
 	IssueID CHAR(4),
 	ReportTime TIMESTAMP,
-	ConditionScore FLOAT NOT NULL CHECK (ConditionScore BETWEEN 0 AND 5),
+	ConditionScore FLOAT NOT NULL CHECK (ConditionScore BETWEEN 0 AND 10),
 	Description VARCHAR(200) NOT NULL,
 	BikeID CHAR(4) NOT NULL,
 	MaintenanceID CHAR(4),
