@@ -130,7 +130,8 @@ CREATE TABLE IssueRecord (
 	InspectorID CHAR(4),
 	PRIMARY KEY (IssueID),
 	FOREIGN KEY (ConditionScore, Description) REFERENCES IssueRule(ConditionScore, Description),
-	FOREIGN KEY (BikeID) REFERENCES Bike(BikeID),
+	FOREIGN KEY (BikeID) REFERENCES Bike(BikeID)
+		ON DELETE CASCADE,
 	FOREIGN KEY (MaintenanceID) REFERENCES Maintenance(MaintenanceID),
 	FOREIGN KEY (InspectorID) REFERENCES Inspector(StaffID)
 );

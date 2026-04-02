@@ -327,12 +327,12 @@ async function deleteBike(BikeID) {
     }).catch((err) => {
         console.error("DELETE BIKE ERROR:", err);
 
-        if (err.errorNum === 2292) {
-            return {
-                success: false,
-                message: "Cannot delete bike because related records exist."
-            };
-        }
+        // if (err.errorNum === 2292) {
+        //     return {
+        //         success: false,
+        //         message: "Cannot delete bike because related records exist."
+        //     };
+        // }
 
         return {
             success: false,

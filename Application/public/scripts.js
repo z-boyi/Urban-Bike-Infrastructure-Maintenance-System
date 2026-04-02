@@ -244,6 +244,7 @@ async function deleteBike(event) {
 
     if (data.success) {
         messageElement.textContent = "Bike deleted successfully!";
+        fetchIssue();
     } else {
         messageElement.textContent = data.message;
     }
