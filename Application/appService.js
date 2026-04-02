@@ -417,7 +417,7 @@ async function updateBikeStatus(bikeID, newStatus) {
 async function searchBikes(status, brand, postalCode) {
     return await withOracleDB(async (connection) => {
         let query = `
-            SELECT BikeID, Brand, LastServiceDate, DeploymentDate, Status, StreetAddress, PostalCode
+            SELECT BikeID, Brand, TO_CHAR(LastServiceDate, 'YYYY-MM-DD') AS LastServiceDate, TO_CHAR(DeploymentDate, 'YYYY-MM-DD') AS DeploymentDate, Status, StreetAddress, PostalCode
             FROM Bike
             WHERE 1=1
         `;
