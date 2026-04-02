@@ -154,7 +154,7 @@ async function deleteStation(StreetAddress, PostalCode) {
             `
             DELETE FROM BikeStation
             WHERE StreetAddress = :StreetAddress
-              AND PostalCode = :PostalCode
+              AND TRIM(PostalCode) = :PostalCode
             `,
             { StreetAddress, PostalCode },
             { autoCommit: true }
