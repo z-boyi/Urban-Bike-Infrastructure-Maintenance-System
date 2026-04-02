@@ -594,6 +594,8 @@ async function fetchIssue() {
 // insert issue
 async function insertIssue(IssueID, BikeID, Description, ConditionScore, InspectorID) {
     return await withOracleDB(async (connection) => {
+
+        // check bike exists
         const bikeCheck = await connection.execute(
             `SELECT 1 FROM Bike WHERE BikeID = :BikeID`,
             { BikeID }
@@ -601,26 +603,8 @@ async function insertIssue(IssueID, BikeID, Description, ConditionScore, Inspect
         if (bikeCheck.rows.length === 0) {
             return { success: false, message: "BikeID does not exist." };
         }
-        const ruleCheck = await connection.execute(
-            `SELECT 1 FROM IssueRule 
-             WHERE ConditionScore = :ConditionScore 
-               AND Description = :Description`,
-            { ConditionScore, Description }
-        );
-        if (ruleCheck.rows.length === 0) {
-            await connection.execute(
-                `INSERT INTO IssueRule 
-                 (ConditionScore, Description, Result)
-                 VALUES (:ConditionScore, :Description, :Result)`,
-                { ConditionScore, Description, Result: "Pending" },
-                { autoCommit: false }
-            );
-        }
 
-        if (ruleCheck.rows.length !== 0) {
-            return { success: false, message: "Duplicate value: Description and ConditionScore already exits." };
-        }
-
+        // check inspector exists
         const inspectorCheck = await connection.execute(
             `SELECT 1 FROM Inspector WHERE StaffID = :InspectorID`,
             { InspectorID }
@@ -629,15 +613,37 @@ async function insertIssue(IssueID, BikeID, Description, ConditionScore, Inspect
             return { success: false, message: "InspectorID does not exist." };
         }
 
+        // check if rule exists
+        const ruleCheck = await connection.execute(
+            `
+            SELECT 1
+            FROM IssueRule
+            WHERE ConditionScore = :ConditionScore
+              AND Description = :Description
+            `,
+            { ConditionScore, Description }
+        );
+
+        // insert rule if it does not exist
+        if (ruleCheck.rows.length === 0) {
+            await connection.execute(
+                `
+                INSERT INTO IssueRule (ConditionScore, Description, Result)
+                VALUES (:ConditionScore, :Description, :Result)
+                `,
+                { ConditionScore, Description, Result: "Pending" }
+            );
+        }
+
+        // insert issue record
         const result = await connection.execute(
             `
-            INSERT INTO IssueRecord 
+            INSERT INTO IssueRecord
             (IssueID, ReportTime, ConditionScore, Description, BikeID, InspectorID)
-            VALUES 
+            VALUES
             (:IssueID, CURRENT_TIMESTAMP, :ConditionScore, :Description, :BikeID, :InspectorID)
             `,
-            { IssueID, ConditionScore, Description, BikeID, InspectorID },
-            { autoCommit: false }
+            { IssueID, ConditionScore, Description, BikeID, InspectorID }
         );
 
         await connection.commit();
@@ -656,7 +662,7 @@ async function insertIssue(IssueID, BikeID, Description, ConditionScore, Inspect
 
         if (err.errorNum === 2291) {
             return { 
-                success: false, 
+                success: false,
                 message: "Foreign key violation (BikeID or InspectorID invalid)." 
             };
         }
