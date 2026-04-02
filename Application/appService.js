@@ -574,6 +574,7 @@ async function fetchIssue() {
             `
             SELECT 
                 IssueID, 
+                Description,
                 TO_CHAR(ReportTime, 'YYYY-MM-DD HH24:MI:SS') AS ReportTime, 
                 ConditionScore, 
                 BikeID, 
