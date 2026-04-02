@@ -851,10 +851,10 @@ async function deleteMaintenanceTask(TaskID) {
 
 async function updateTaskStatus(TaskID, NewTechnicianID = null, CompleteTask = false) {
     return await withOracleDB(async (connection) => {
-        // check existence of task and get EndTime
+        // check existence of task and get EndTime and previous TechnicianID
         const checkExistence = await connection.execute(
             `
-            SELECT EndTime
+            SELECT EndTime, TechnicianID
             FROM MaintenanceTask
             WHERE TaskID = :TaskID
             `,
@@ -865,10 +865,16 @@ async function updateTaskStatus(TaskID, NewTechnicianID = null, CompleteTask = f
         }
        
         const endTime = checkExistence.rows[0][0];
+        const currentTechnicianID = checkExistence.rows[0][1]
 
         // check if completed task
         if (endTime !== null) {
             return { success: false, message: "Task is already completed." };
+        }
+
+        // check if NewTechnicianID is the same as currentTechnicianID (this is required only when task is incomplete).
+        if (NewTechnicianID !== null && NewTechnicianID === currentTechnicianID && !CompleteTask) {
+            return { success: false, message: "Technician is already assigned to this task." };
         }
        
         // reassign technician if provided
