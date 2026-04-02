@@ -247,8 +247,26 @@ router.get('/issue/fetch', async(req, res) => {
 })
 
 router.post('/issue/insert', async (req, res) => {
-    const { IssueID, BikeID, Description, InspectorID } = req.body;
-    const insertResult = await appService.insertIssue(IssueID, BikeID, Description, InspectorID);
+    const { IssueID, BikeID, Description, ConditionScore,InspectorID } = req.body;
+    if (!IssueID || !BikeID || !Description || ConditionScore === undefined) {
+        return res.json({
+            success: false,
+            message: "Missing required fields."
+        });
+    }
+    if (isNaN(ConditionScore) || ConditionScore < 0 || ConditionScore > 10) {
+        return res.json({
+            success: false,
+            message: "ConditionScore must be a number between 0 and 5."
+        });
+    }
+    if (IssueID.length !== 4 || BikeID.length !== 4||IssueID[0] != "I"||BikeID[0]!="B") {
+        return res.json({
+            success: false,
+            message: "IssueID and BikeID must be in the specific style."
+        });
+    }
+    const insertResult = await appService.insertIssue(IssueID, BikeID, Description, ConditionScore, InspectorID);
     res.json(insertResult);
 });
 
@@ -349,8 +367,8 @@ router.post("/maintenance-task/delete", async (req, res) => {
 });
 
 router.post("/maintenance-task/update", async (req, res) => {
-    const { TaskID, NewTechnicianID, CompleteTask } = req.body;
-    const updateResult = await appService.updateTaskStatus(TaskID, NewTechnicianID, CompleteTask);
+    const {TaskID} = req.body;
+    const updateResult = await appService.updateTaskStatus(TaskID);
     res.json(updateResult);
 })
 
