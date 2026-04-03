@@ -380,8 +380,9 @@ router.post("/maintenance-task/delete", async (req, res) => {
 });
 
 router.post("/maintenance-task/update", async (req, res) => {
-    const {TaskID} = req.body;
-    const updateResult = await appService.updateTaskStatus(TaskID);
+    const { TaskID, NewTechnicianID, CompleteTask } = req.body;
+
+    const updateResult = await appService.updateTaskStatus(TaskID, NewTechnicianID, CompleteTask);
     res.json(updateResult);
 })
 
