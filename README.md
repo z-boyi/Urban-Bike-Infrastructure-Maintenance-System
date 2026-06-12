@@ -129,6 +129,70 @@ FLEET MANAGEMENT          OPERATIONS           WORKFORCE            REPORTING
 **API Routes:** 390 lines of endpoint definitions  
 **Patterns:** Async/await, connection pooling, middleware
 
+## Local Development Setup
+
+### Prerequisites
+
+* Node.js 20+
+* Docker Desktop
+* Oracle Database Free Docker Container
+
+### Start Oracle Database
+
+```bash
+docker start oracle-free
+```
+
+Verify that the container is running:
+
+```bash
+docker ps
+```
+
+### Configure Environment Variables
+
+Update `Application/.env`:
+
+```env
+ORACLE_USER=system
+ORACLE_PASS=Oracle123
+
+ORACLE_HOST=localhost
+ORACLE_PORT=1521
+ORACLE_DBNAME=FREEPDB1
+
+PORT=65535
+```
+
+### Install Dependencies
+
+```bash
+cd Application
+npm install
+```
+
+### Initialize Database
+
+Run:
+
+```sql
+Application/scripts/sql/db.sql
+```
+
+using the Oracle SQL Developer VS Code extension before starting the application for the first time.
+
+### Run the Application
+
+```bash
+node server.js
+```
+
+The application should be available at:
+
+```text
+http://localhost:65535
+```
+
 ## 📁 What's Inside
 
 ```
