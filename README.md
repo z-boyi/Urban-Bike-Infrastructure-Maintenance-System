@@ -1,6 +1,6 @@
 # 🚲 Urban Bike Infrastructure Maintenance System
 
-> **Production-grade operational analytics platform** for fleet management.  
+> **Operational analytics system for bike fleet maintenance**, built as a team project for UBC CPSC 304 (Relational Databases).  
 > End-to-end data engineering: normalized relational database, complex SQL analytics, KPI metrics, REST API architecture.
 
 ---
@@ -9,12 +9,12 @@
 
 | What | Details |
 |------|---------|
-| **Database** | 15-table 3NF normalized schema with referential integrity |
+| **Database** | 20-table 3NF normalized schema with referential integrity |
 | **Analytics** | 7 complex SQL queries (joins, aggregations, relational division) |
 | **APIs** | 20+ REST endpoints for CRUD & analytics operations |
-| **KPIs** | 4 real-time metrics (availability %, MTTR, completion rate, health score) |
+| **KPIs** | 4 on-demand KPI metrics (availability %, MTTR, completion rate, health score) |
 | **Tech Stack** | Oracle, Node.js/Express, SQL, REST API |
-| **Code** | 945 lines of query logic + 390 lines of API routes |
+| **Code** | ~950 lines of query logic + ~390 lines of API routes |
 
 ---
 
@@ -27,12 +27,12 @@
 
 **Real-world problem:** How do you track bikes, maintenance, technicians, and costs across a city-wide network?
 
-**Our solution:** A normalized relational database + analytics layer that computes operational KPIs in real-time.
+**Our solution:** A normalized relational database + analytics layer that computes operational KPIs on demand.
 
 ### Core Features
 
 **Transactional Operations** (OLTP)
-- Track 1000+ bikes across multiple stations
+- Track bikes, components and stations (schema designed for city-scale fleets; demo dataset seeded with sample records)
 - Report and classify issues (condition-based routing)
 - Assign maintenance tasks to technicians
 - Monitor repair progress and completion
@@ -45,7 +45,7 @@
 
 ## 🗄️ Database Architecture: Why It Matters
 
-### Schema Design (15 Tables, 3NF Normalized)
+### Schema Design (20 Tables, 3NF Normalized)
 
 The database is optimized for **both** fast operational writes and complex analytical queries:
 
@@ -69,7 +69,7 @@ FLEET MANAGEMENT          OPERATIONS           WORKFORCE            REPORTING
 - Polymorphic type hierarchy (Bike → RegularBike/EBike)
 - Constraint-based business rules (status validation, date ranges)
 - Cascading deletes (maintain referential integrity automatically)
-- Foreign keys across 15 tables (prevent orphaned records)
+- Foreign keys across 20 tables (prevent orphaned records)
 
 ## 📈 7 Analytical SQL Queries
 
@@ -88,7 +88,7 @@ FLEET MANAGEMENT          OPERATIONS           WORKFORCE            REPORTING
 **Why This Matters:**
 - Demonstrates SQL progression: beginner → advanced
 - Shows ability to translate business problems into queries
-- Includes production patterns: null handling, efficient aggregation
+- Handles real-world data issues: null handling, efficient aggregation
 - Real metrics that drive decisions (not just data for data's sake)
 
 ---
@@ -125,8 +125,8 @@ FLEET MANAGEMENT          OPERATIONS           WORKFORCE            REPORTING
 
 **Database:** Oracle RDBMS  
 **Backend:** Node.js + Express  
-**Query Layer:** 945 lines of production SQL logic  
-**API Routes:** 390 lines of endpoint definitions  
+**Query Layer:** ~950 lines of SQL logic  
+**API Routes:** ~390 lines of endpoint definitions  
 **Patterns:** Async/await, connection pooling, middleware
 
 ## Local Development Setup
@@ -199,9 +199,9 @@ http://localhost:65535
 Application/
 ├── server.js                    # Express entry point
 ├── appController.js             # 20+ REST route definitions (390 lines)
-├── appService.js                # Database service layer (945 lines of SQL logic)
+├── appService.js                # Database service layer (~950 lines of SQL logic)
 ├── scripts/sql/
-│   └── db.sql                  # Complete schema: 15 tables, constraints, 50+ seed records
+│   └── db.sql                  # Complete schema: 20 tables, constraints, 100+ seed records
 └── public/
     ├── index.html              # Interactive query UI
     ├── scripts.js              # Frontend logic
@@ -233,7 +233,7 @@ Application/
 - ✅ Performance benchmarking (individual vs. team averages)
 - ✅ SLA tracking (completion rates, thresholds)
 
-### Production Engineering
+### Backend Engineering
 - ✅ Parameterized query construction (injection protection)
 - ✅ Connection pooling (resource management under load)
 - ✅ Error handling (graceful failure, descriptive messages)
@@ -247,15 +247,14 @@ Application/
 ┌─────────────────────────────────────────┐
 │            PROJECT STATISTICS           │
 ├─────────────────────────────────────────┤
-│ 15 database tables (3NF normalized)     │
+│ 20 database tables (3NF normalized)     │
 │ 20+ REST API endpoints                  │
 │ 7 analytical SQL queries                │
-│ 4 real-time KPI metrics                 │
-│ 50+ test records for realism            │
-│ 945 lines of query logic                │
+│ 4 KPI metrics                           │
+│ 100+ seed records                       │
+│ ~950 lines of query logic               │
 │ 390 lines of API definitions            │
-│ 100% parameterized queries              │
-│ 0 SQL injection vectors                 │
+│ Bind variables + column whitelisting    │
 └─────────────────────────────────────────┘
 ```
 
@@ -263,14 +262,13 @@ Application/
 
 ## 🎯 Project Summary
 
-This system demonstrates end-to-end data engineering: designing normalized relational databases, writing production-grade SQL queries, building REST APIs for data exposure, and computing business-critical metrics. The architecture supports both high-performance operational transactions (OLTP) and complex analytical queries (OLAP), reflecting real-world data systems.
+This system demonstrates end-to-end data engineering: designing normalized relational databases, writing analytical SQL queries, building REST APIs for data exposure, and computing business-critical metrics. The design separates operational transactions (OLTP) from analytical queries (OLAP), following patterns used in real-world data systems.
 
 **Key Achievements:**
-- Built a 15-table 3NF normalized schema with referential integrity enforcement
+- Built a 20-table 3NF normalized schema with referential integrity enforcement
 - Implemented 7 analytical SQL queries covering advanced patterns (joins, aggregations, relational division)
 - Created REST API layer with parameterized queries, connection pooling, and error handling
-- Computed 4 real-time KPIs that support operational decision-making
-- Applied production data engineering patterns throughout
+- Computed 4 KPIs that support operational decision-making
 
 ---
 
